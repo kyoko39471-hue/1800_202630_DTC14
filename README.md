@@ -60,14 +60,13 @@ elmo-hikes/
 ├── index.html
 ├── package.json
 ├── README.md
-```
+```git commit -m "feat: Add intro to README for #YourName"
 
 ---
 
 
 ## Contributors
 - **Surkhab** - BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: Loves solving Rubik's Cubes in under a minute.
-- **Sijin** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
 
 ---
 
