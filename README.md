@@ -66,10 +66,10 @@ elmo-hikes/
 
 
 ## Contributors
+- **Sijin** - BCIT CST Student with a passion for cafes and food and user-friendly applications. Fun fact: Loves traveling in Seoul.
 - **Zamin** - BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: Loves solving Rubik's Cubes in under a minute.
 - **Surkhab** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
 
----
 
 
 ## Acknowledgments
