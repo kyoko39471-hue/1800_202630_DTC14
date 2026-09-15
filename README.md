@@ -60,7 +60,7 @@ elmo-hikes/
 ├── index.html
 ├── package.json
 ├── README.md
-```
+```git commit -m "feat: Add intro to README for #YourName"
 
 ---
 
