@@ -1,74 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <title>Communication Help</title>
-    <meta name="comp1800 template" content="My 1800 App">
-
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Other libraries go here -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.2/font/bootstrap-icons.min.css">
-
-    <!-- Our own stylesheet -->
-    <link rel="stylesheet" href="./styles/style.css">
-
-    <a href="login.html">Log in</a>
+    <title>Home | Communication Help</title>
+    <script type="module" src="/src/navigation.js"></script>
 </head>
-
-<body>
-
-    <!------------------------------>
-    <!-- Your HTML Layout go here -->
-    <div class="page">
+<body class="communication-app">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="page container-fluid">
         <header class="page-header">
-            <p class="eyebrow">COMMUNICATION HELP</p>
-            <h1>How Can We Help?</h1>
+            <div class="d-flex justify-content-between align-items-center gap-3"><p class="eyebrow">Communication Help</p><a class="account-link" href="login.html">Log in</a></div>
+            <h1>How can we help?</h1>
             <p class="subtitle">Choose what you want to do.</p>
         </header>
-        <main>
-            <a href="" class="option-card">
-                <h2>Express Needs Clearly</h2>
-                <p>Write, simplify, and show a request.</p>
-            </a>
-            <a href="" class="option-card">
-                <h2>Ask for Directions</h2>
-                <p>Get help finding your way.</p>
-            </a>
-            <a href="" class="option-card">
-                <h2>Useful Travel Phrases</h2>
-                <p>Use common phrases while traveling.</p>
-            </a>
+        <main id="main-content" class="page-content">
+            <div class="d-grid gap-3">
+                <a href="express-needs.html" class="option-card card">
+                    <div class="d-flex justify-content-between gap-3"><h2>Express needs clearly</h2><span aria-hidden="true">→</span></div>
+                    <p>Write, simplify, and show a request.</p>
+                </a>
+                <a href="directions.html" class="option-card card">
+                    <div class="d-flex justify-content-between gap-3"><h2>Ask for directions</h2><span aria-hidden="true">→</span></div>
+                    <p>Get help finding your way.</p>
+                </a>
+                <a href="travel-phrases.html" class="option-card card">
+                    <div class="d-flex justify-content-between gap-3"><h2>Useful Travel Phrases</h2><span aria-hidden="true">→</span></div>
+                    <p>Use common phrases while travelling.</p>
+                </a>
+            </div>
         </main>
-        <nav class="bottom-nav">
-            <a href="">
-                <i class="bi bi-house"></i>
-                <span>Home</span>
-            </a>
-            <a href="">
-                <i class="bi bi-chat-left-text"></i>
-                <span>Phrases</span>
-            </a>
-            <a href="">
-                <i class="bi bi-question-circle"></i>
-                <span>Help</span>
-            </a>
-        </nav>
+        <app-navigation active="home"></app-navigation>
     </div>
-    <!------------------------------>
-    <!-- Stuff for body goes here -->
-
-
-    <!---------------------------------------------->
-    <!-- Your own JavaScript functions go here    -->
-    <!---------------------------------------------->
-
-    <!-- Link to scripts of your own -->
-    <!-- <script type=" module" src="./src/main.js">
-                    </script> -->
-
 </body>
-
 </html>
