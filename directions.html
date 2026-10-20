@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ask for directions | Communication Help</title>
+    <script type="module" src="/src/navigation.js"></script>
+</head>
+<body class="communication-app">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="page container-fluid">
+        <header class="page-header">
+            <a class="back-link" href="index.html">‹ Back to Home</a>
+            <h1>Ask for directions</h1>
+            <p class="subtitle">Choose your languages and preview a question.</p>
+        </header>
+        <main id="main-content" class="page-content">
+            <div class="d-grid gap-4">
+                <div class="row g-3">
+                    <label class="col-12 fw-semibold">My language
+                        <select class="form-select mt-2"><option selected>English</option><option>Spanish</option><option>Japanese</option></select>
+                    </label>
+                    <label class="col-12 fw-semibold">Local language
+                        <select class="form-select mt-2"><option>English</option><option selected>Spanish</option><option>Japanese</option></select>
+                    </label>
+                </div>
+                <label class="d-block fw-semibold">Your question
+                    <textarea class="form-control mt-2" rows="3" placeholder="For example: Where is the train station?"></textarea>
+                </label>
+                <section class="content-card" aria-label="Example directions">
+                    <p class="section-label">Example question · Spanish</p>
+                    <p class="request-text" lang="es">¿Dónde está la estación de tren?</p>
+                    <hr>
+                    <h2>Example answer</h2>
+                    <p class="mt-2">Go straight and turn right.</p>
+                </section>
+                <p class="example-note">This is a fixed English-to-Spanish preview. Changing the selections or question does not translate the example yet.</p>
+            </div>
+        </main>
+        <app-navigation></app-navigation>
+    </div>
+</body>
+</html>

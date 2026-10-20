@@ -1,108 +1,57 @@
-/* ---------------------------------------------
-   Base reset
-   (replaces the defaults Tailwind used to add)
---------------------------------------------- */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-body {
+/* Shared app styles. Bootstrap loads first through src/navigation.js. */
+.communication-app {
     margin: 0;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f0f0f0;
+    color: #222;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     line-height: 1.5;
-    color: #000;
 }
-
-h1,
-h2,
-p {
-    margin: 0;
-}
-
-/* ---------------------------------------------
-   Page layout (shared by all pages)
---------------------------------------------- */
-.page {
-    width: 100%;
-    max-width: 430px;
-    min-height: 100dvh;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-}
-
-.page-header {
-    padding: 4rem 0 1.5rem;
-}
-
-.page-header h1 {
-    margin-top: 0.75rem;
-    font-size: 1.875rem;
-    font-weight: 700;
-    line-height: 1.2;
-}
-
-.eyebrow {
-    font-size: 0.875rem;
-    font-weight: 600;
-    line-height: 1.25rem;
-    color: #6b7280;
-}
-
-.subtitle {
-    margin-top: 0.75rem;
-    font-size: 1rem;
-    color: #6b7280;
-}
-
-/* ---------------------------------------------
-   Option cards (home page)
---------------------------------------------- */
-.option-card {
-    display: block;
-    margin: 1rem;
-    padding: 10px;
-    border: 1px solid #000;
-    border-radius: 10px;
-    background-color: #e5e7e8;
-    color: #000;
-    text-decoration: none;
-}
-
-.option-card h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    line-height: 1.4;
-}
-
-.option-card p {
-    margin-top: 0.5rem;
-    font-size: 1rem;
-}
-
-/* ---------------------------------------------
-   Bottom navigation bar (shared by all pages)
---------------------------------------------- */
-.bottom-nav {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 3.75rem;
-    border: 1px solid #000;
-    border-radius: 5px;
-    background-color: #f0f0f0;
-}
-
-.bottom-nav a {
-    flex: 1;
+.communication-app .page {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    color: inherit;
-    text-decoration: none;
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    min-height: 100svh;
+    margin-inline: auto;
+    padding: 0 24px;
+    background: #fff;
 }
-
-.bottom-nav i {
-    font-size: 1.5rem;
-    line-height: 2rem;
+.communication-app .page-header { padding: 48px 0 28px; }
+.communication-app h1 { margin: 14px 0 12px; font-size: 1.875rem; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.communication-app h2 { margin: 0; font-size: 1.25rem; font-weight: 650; line-height: 1.4; }
+.communication-app p { margin: 0; }
+.communication-app .eyebrow { font-size: .75rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
+.communication-app .subtitle { color: #555; }
+.communication-app .account-link, .communication-app .back-link { display: inline-flex; align-items: center; min-height: 44px; color: #222; text-underline-offset: 4px; }
+.communication-app .account-link { font-size: .875rem; white-space: nowrap; }
+.communication-app .back-link { margin-bottom: 12px; }
+.communication-app .page-content { flex: 1; padding-bottom: 32px; min-width: 0; }
+.communication-app .option-card { padding: 20px; border: 1px solid #999; border-radius: 8px; background: #eee; color: #222; text-decoration: none; }
+.communication-app .option-card p { margin-top: 8px; color: #444; font-size: .9375rem; }
+.communication-app .option-card:hover { background: #ddd; border-color: #222; }
+.communication-app .content-card { padding: 20px; border: 1px solid #aaa; border-radius: 8px; background: #f5f5f5; }
+.communication-app .section-label { margin-bottom: 12px; font-size: .75rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; color: #555; }
+.communication-app .form-control, .communication-app .form-select { min-height: 48px; border-color: #888; color: #222; }
+.communication-app textarea.form-control { min-height: 140px; resize: vertical; }
+.communication-app .example-note { color: #555; font-size: .875rem; }
+.communication-app .request-text { font-size: 1.5rem; font-weight: 650; line-height: 1.45; overflow-wrap: anywhere; }
+.communication-app .phrase-list .list-group-item { padding: 16px; border-color: #aaa; color: #222; }
+.communication-app .phrase-list a { background: #eee; text-underline-offset: 4px; }
+.communication-app .help-steps { margin: 12px 0 0; padding-left: 22px; }
+.communication-app .help-steps li + li { margin-top: 8px; }
+.communication-app [lang="ja"] { line-height: 1.8; }
+.communication-app app-navigation { display: block; position: sticky; bottom: 0; z-index: 10; margin: auto -24px 0; padding-bottom: env(safe-area-inset-bottom, 0); background: #fff; }
+.communication-app .bottom-nav { justify-content: space-around; border-top: 1px solid #aaa; background: #fafafa; }
+.communication-app .bottom-nav a { display: flex; flex: 1; min-height: 76px; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 10px 4px; color: #333; text-decoration: none; font-size: .8125rem; }
+.communication-app .bottom-nav svg { width: 24px; height: 24px; }
+.communication-app .bottom-nav a[aria-current] { background: #e5e5e5; font-weight: 700; box-shadow: inset 0 3px #222; }
+.communication-app a:focus-visible, .communication-app select:focus-visible, .communication-app textarea:focus-visible { outline: 3px solid #222; outline-offset: 3px; box-shadow: none; }
+.communication-app .skip-link { position: fixed; top: -100px; left: 16px; z-index: 20; padding: 12px; background: #fff; color: #222; }
+.communication-app .skip-link:focus { top: 12px; }
+.communication-app section { scroll-margin-top: 20px; }
+@media (max-width: 359px) {
+    .communication-app .page { padding-inline: 16px; }
+    .communication-app app-navigation { margin-inline: -16px; }
+    .communication-app .option-card, .communication-app .content-card { padding: 16px; }
 }
