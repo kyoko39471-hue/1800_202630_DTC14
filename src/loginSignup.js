@@ -1,128 +1,115 @@
-// -------------------------------------------------------------
-// src/loginSignup.js
-// -------------------------------------------------------------
-// Part of the COMP1800 Projects 1 Course (BCIT).
-// Starter code provided for students to use and adapt.
-// Manages the login/signup form behaviour and redirects.
-// -------------------------------------------------------------
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
-import './styles/style.css';
-import {
-    loginUser,
-    signupUser,
-    authErrorMessage,
-} from './authentication.js';
-
-
-// --- Login and Signup Page ---
-// Handles toggling between Login/Signup views and form submits
-// using plain DOM APIs for simplicity and maintainability.
-
+import { loginUser, signupUser, authErrorMessage } from './authentication.js';
+import { auth } from './firebaseConfig.js';
+import { saveUserProfile } from './userProfiles.js';
 
 function initAuthUI() {
-    // --- DOM Elements ---
-    const alertEl = document.getElementById('authAlert');
+    const alert = document.getElementById('authAlert');
+    const status = document.getElementById('authStatus');
     const loginView = document.getElementById('loginView');
     const signupView = document.getElementById('signupView');
-    const toSignupBtn = document.getElementById('toSignup');
-    const toLoginBtn = document.getElementById('toLogin');
     const loginForm = document.getElementById('loginForm');
     const signupForm = document.getElementById('signupForm');
-    const redirectUrl = 'main.html';
+    const loginLanguage = document.getElementById('loginLanguage');
+    const signupLanguage = document.getElementById('signupLanguage');
+    let loginLanguageChanged = false;
+    let pendingSignupUser = null;
+    let busy = false;
 
-    // --- Helper Functions ---
-    // Toggle element visibility
-    function setVisible(el, visible) {
-        el.classList.toggle('d-none', !visible);
+    function clearError() {
+        alert.classList.add('d-none');
+        alert.textContent = '';
     }
 
-    // Show error message with accessibility and auto-hide
-    let errorTimeout;
-    function showError(msg) {
-        alertEl.textContent = msg || '';
-        alertEl.classList.remove('d-none');
-        clearTimeout(errorTimeout);
-        errorTimeout = setTimeout(hideError, 5000); // Auto-hide after 5s
+    function showError(message) {
+        alert.textContent = message;
+        alert.classList.remove('d-none');
     }
 
-    // Hide error message
-    function hideError() {
-        alertEl.classList.add('d-none');
-        alertEl.textContent = '';
-        clearTimeout(errorTimeout);
+    function showView(signup) {
+        if (busy) return;
+        clearError();
+        status.textContent = '';
+        loginView.classList.toggle('d-none', signup);
+        signupView.classList.toggle('d-none', !signup);
+        document.title = `${signup ? 'Create account' : 'Log in'} | Communication Help`;
+        (signup ? signupView : loginView).querySelector('input').focus();
     }
 
-    // Enable/disable submit button for forms
-    function setSubmitDisabled(form, disabled) {
-        const submitBtn = form?.querySelector('[type="submit"]');
-        if (submitBtn) submitBtn.disabled = disabled;
+    function setBusy(value, message = '') {
+        busy = value;
+        status.textContent = message;
+        [loginForm, signupForm].forEach(form => {
+            form.setAttribute('aria-busy', String(value));
+            form.querySelectorAll('input, select, button').forEach(control => control.disabled = value);
+        });
     }
 
-    // --- Event Listeners ---
-    // Toggle buttons
-    toSignupBtn?.addEventListener('click', (e) => {
-        e.preventDefault();
-        hideError();
-        setVisible(loginView, false);
-        setVisible(signupView, true);
-        signupView?.querySelector('input')?.focus();
+    function profileError(error, signedUp) {
+        const cause = error?.code === 'permission-denied'
+            ? 'Firestore did not allow your profile to be saved.'
+            : 'Your profile could not be saved. Check your connection and try again.';
+        return `${signedUp ? 'Your account was created.' : 'Your login was successful.'} ${cause} ${signedUp ? 'Submit again to retry, or log in to finish later.' : 'Log in again to retry.'}`;
+    }
+
+    document.getElementById('toSignup').addEventListener('click', event => {
+        event.preventDefault();
+        signupLanguage.value = loginLanguage.value;
+        showView(true);
     });
-
-    toLoginBtn?.addEventListener('click', (e) => {
-        e.preventDefault();
-        hideError();
-        setVisible(signupView, false);
-        setVisible(loginView, true);
-        loginView?.querySelector('input')?.focus();
+    document.getElementById('toLogin').addEventListener('click', event => {
+        event.preventDefault();
+        showView(false);
     });
+    loginLanguage.addEventListener('change', () => { loginLanguageChanged = true; });
 
-    // Login form submit
-    loginForm?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        hideError();
-        const email = document.querySelector('#loginEmail')?.value?.trim() ?? '';
-        const password = document.querySelector('#loginPassword')?.value ?? '';
-        if (!email || !password) {
-            showError('Please enter your email and password.');
-            return;
-        }
-        setSubmitDisabled(loginForm, true);
+    loginForm.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (busy || !loginForm.reportValidity()) return;
+        clearError();
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        const preferredLanguage = loginLanguageChanged ? loginLanguage.value : undefined;
+        setBusy(true, 'Logging in…');
+        let signedIn = false;
         try {
-            await loginUser(email, password);
-            location.href = redirectUrl;
-        } catch (err) {
-            showError(authErrorMessage(err));
-            console.error(err);
-        } finally {
-            setSubmitDisabled(loginForm, false);
+            const credential = await loginUser(email, password);
+            signedIn = true;
+            status.textContent = 'Loading your profile…';
+            await saveUserProfile(credential.user, { preferredLanguage });
+            document.getElementById('loginPassword').value = '';
+            window.location.assign('index.html');
+        } catch (error) {
+            showError(signedIn ? profileError(error, false) : authErrorMessage(error));
+            setBusy(false);
         }
     });
 
-    // Signup form submit
-    signupForm?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        hideError();
-        const name = document.querySelector('#signupName')?.value?.trim() ?? '';
-        const email = document.querySelector('#signupEmail')?.value?.trim() ?? '';
-        const password = document.querySelector('#signupPassword')?.value ?? '';
-        if (!name || !email || !password) {
-            showError('Please fill in name, email, and password.');
-            return;
-        }
-        setSubmitDisabled(signupForm, true);
+    signupForm.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (busy || !signupForm.reportValidity()) return;
+        clearError();
+        const name = document.getElementById('signupName').value.trim();
+        const email = document.getElementById('signupEmail').value.trim();
+        const password = document.getElementById('signupPassword').value;
+        const preferredLanguage = signupLanguage.value;
+        if (!name) { showError('Please enter your full name.'); return; }
+        setBusy(true, 'Creating your account…');
         try {
-            await signupUser(name, email, password);
-            location.href = redirectUrl;
-        } catch (err) {
-            showError(authErrorMessage(err));
-            console.error(err);
-        } finally {
-            setSubmitDisabled(signupForm, false);
+            // A failed profile write must not create a second Auth account on retry.
+            if (!pendingSignupUser || pendingSignupUser.email?.toLowerCase() !== email.toLowerCase() || auth.currentUser?.uid !== pendingSignupUser.uid) {
+                pendingSignupUser = null;
+                pendingSignupUser = await signupUser(name, email, password);
+            }
+            status.textContent = 'Saving your profile…';
+            await saveUserProfile(pendingSignupUser, { name, preferredLanguage });
+            document.getElementById('signupPassword').value = '';
+            window.location.assign('index.html');
+        } catch (error) {
+            showError(pendingSignupUser ? profileError(error, true) : authErrorMessage(error));
+            setBusy(false);
         }
     });
 }
 
-// --- Initialize UI on DOMContentLoaded ---
-document.addEventListener('DOMContentLoaded', initAuthUI);
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAuthUI, { once: true });
+else initAuthUI();

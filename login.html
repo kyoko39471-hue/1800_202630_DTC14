@@ -1,92 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <title>My BCIT Project</title>
-    <meta name="comp1800 template" content="My 1800 App">
-
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Web Components for shared navbar and footer layout -->
-    <script type="module" src="/src/components/site-navbar.js"></script>
-    <script type="module" src="/src/components/site-footer.js"></script>
-</head>
-
-<body>
-    <!------------------------------>
-    <!-- Your HTML Layout go here -->
-    <!------------------------------>
-
-    <!-- our own navbar goes here -->
-    <site-navbar></site-navbar>
-
-    <!-- Main content goes here -->
-
-    <!-- our own footer goes here -->
-    <site-footer></site-footer>
-
-    <!---------------------------------------------->
-    <!-- Your own JavaScript scripts go here      -->
-    <!---------------------------------------------->
-
-    <script type="module" src="/src/app.js"></script>
-
-    <!---------------------------------------------->
-    <!-- Your own JavaScript scripts go here      -->
-    <!---------------------------------------------->
-
-    <!-- Firebase and authentication related scripts -->
-    <!-- The order of loading matters -->
-    <script type="module" src="/src/firebaseConfig.js"></script>
-    <script type="module" src="/src/authentication.js"></script>
+    <title>Log in | Communication Help</title>
+    <script type="module" src="/src/navigation.js"></script>
     <script type="module" src="/src/loginSignup.js"></script>
-
-</body>
-    <div class="container py-5" style="max-width: 420px;">
-        <!-- Alerts -->
-        <div id="authAlert" class="alert alert-danger d-none" role="alert"></div>
-
-        <!-- Login -->
-        <div id="loginView">
-            <h3 class="mb-3 text-center">Login</h3>
-            <form id="loginForm" novalidate>
-                <div class="mb-3">
-                    <input type="email" id="loginEmail" class="form-control" placeholder="Email" required />
+</head>
+<body class="communication-app auth-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="page container-fluid">
+        <header class="page-header auth-header">
+            <div class="d-flex justify-content-between align-items-center gap-3">
+                <a class="eyebrow brand-link" href="index.html">Communication Help</a>
+                <a class="back-link" href="index.html">← Home</a>
+            </div>
+        </header>
+        <main id="main-content" class="page-content auth-content">
+            <div class="auth-panel">
+                <div id="authAlert" class="alert alert-danger d-none" role="alert"></div>
+                <div id="loginView">
+                    <h1>Welcome back</h1>
+                    <p class="subtitle mb-4">Log in to access your saved phrases.</p>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label" for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" class="form-control" autocomplete="username" inputmode="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" class="form-control" autocomplete="current-password" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label" for="loginLanguage">Preferred language</label>
+                            <select id="loginLanguage" class="form-select" aria-describedby="loginLanguageHint" required>
+                                <option value="en" selected hidden>English (default)</option>
+                                <option value="fr">French — Français</option>
+                                <option value="pa">Punjabi — ਪੰਜਾਬੀ</option>
+                                <option value="zh">Mandarin — 中文</option>
+                                <option value="ur">Urdu — اردو</option>
+                                <option value="es">Spanish — Español</option>
+                            </select>
+                            <p id="loginLanguageHint" class="form-text">Choose to update your preference, or keep your saved language by leaving this unchanged.</p>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100 auth-submit">Log in</button>
+                    </form>
+                    <p class="auth-switch">New here? <a href="#signup" id="toSignup">Create an account</a></p>
                 </div>
-                <div class="mb-3">
-                    <input type="password" id="loginPassword" class="form-control" placeholder="Password" required />
+                <div id="signupView" class="d-none">
+                    <h1>Create an account</h1>
+                    <p class="subtitle mb-4">Keep your phrases and preferred language together.</p>
+                    <form id="signupForm">
+                        <div class="mb-3">
+                            <label class="form-label" for="signupName">Full name</label>
+                            <input type="text" id="signupName" class="form-control" autocomplete="name" maxlength="100" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="signupEmail">Email</label>
+                            <input type="email" id="signupEmail" class="form-control" autocomplete="username" inputmode="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" class="form-control" autocomplete="new-password" minlength="6" aria-describedby="passwordHint" required>
+                            <p id="passwordHint" class="form-text">Use at least 6 characters.</p>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label" for="signupLanguage">Preferred language</label>
+                            <select id="signupLanguage" class="form-select" required>
+                                <option value="en" selected hidden>English (default)</option>
+                                <option value="fr">French — Français</option>
+                                <option value="pa">Punjabi — ਪੰਜਾਬੀ</option>
+                                <option value="zh">Mandarin — 中文</option>
+                                <option value="ur">Urdu — اردو</option>
+                                <option value="es">Spanish — Español</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100 auth-submit">Create account</button>
+                    </form>
+                    <p class="auth-switch">Already have an account? <a href="#login" id="toLogin">Log in</a></p>
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Login</button>
-            </form>
-            <small class="d-block mt-3 text-center">
-                Don’t have an account?
-                <a href="#" id="toSignup">Sign up</a>
-            </small>
-        </div>
-
-        <!-- Signup -->
-        <div id="signupView" class="d-none">
-            <h3 class="mb-3 text-center">Sign Up</h3>
-            <form id="signupForm" novalidate>
-                <div class="mb-3">
-                    <input type="text" id="signupName" class="form-control" placeholder="First and Last Name"
-                        aria-label="Full name" required />
-                </div>
-                <div class="mb-3">
-                    <input type="email" id="signupEmail" class="form-control" placeholder="Email" required />
-                </div>
-                <div class="mb-3">
-                    <input type="password" id="signupPassword" class="form-control" placeholder="Password" required />
-                </div>
-                <button type="submit" class="btn btn-success w-100">Create Account</button>
-            </form>
-            <small class="d-block mt-3 text-center">
-                Already have an account?
-                <a href="#" id="toLogin">Login</a>
-            </small>
-        </div>
+                <p id="authStatus" class="auth-status" role="status" aria-live="polite"></p>
+            </div>
+        </main>
+        <app-navigation></app-navigation>
     </div>
-
+</body>
 </html>
