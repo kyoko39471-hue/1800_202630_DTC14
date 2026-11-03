@@ -1,6 +1,7 @@
 // Import the file that has the authentication helper function we want to use.
 // The function we want to use is called "onAuthReady" which returns the login state
 import { onAuthReady } from "/src/authentication.js";
+import { seedTravelPhrases } from "./seedTravelPhrases.js";
 
 function showName() {
     // Pass a CALLBACK function to run when Firebase finishes checking login status
@@ -17,3 +18,4 @@ function showName() {
 }
 
 showName();
+seedTravelPhrases();
