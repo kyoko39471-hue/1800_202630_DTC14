@@ -1,36 +1,95 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home | Communication Help</title>
-    <script type="module" src="/src/navigation.js"></script>
+    <title>Welcome | Communication Help</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #222;
+            background-color: #fff;
+        }
+
+        .welcome-page {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .site-header {
+            padding: 24px;
+            border-bottom: 1px solid #ddd;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 32px 24px;
+            text-align: center;
+        }
+
+        .welcome-content {
+            width: 100%;
+            max-width: 440px;
+        }
+
+        h1 {
+            margin: 0 0 16px;
+            font-size: clamp(30px, 7vw, 40px);
+        }
+
+        p {
+            margin: 0 0 32px;
+            font-size: 17px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .login-button {
+            display: block;
+            padding: 15px 24px;
+            border-radius: 10px;
+            background-color: #222;
+            color: #fff;
+            font-size: 17px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .login-button:hover,
+        .login-button:focus-visible {
+            background-color: #444;
+        }
+    </style>
 </head>
-<body class="communication-app">
-    <a class="skip-link" href="#main-content">Skip to content</a>
-    <div class="page container-fluid">
-        <header class="page-header">
-            <div class="d-flex justify-content-between align-items-center gap-3"><p class="eyebrow">Communication Help</p><a class="account-link" href="login.html">Log in</a></div>
-            <h1>How can we help?</h1>
-            <p class="subtitle">Choose what you want to do.</p>
-        </header>
-        <main id="main-content" class="page-content">
-            <div class="d-grid gap-3">
-                <a href="express-needs.html" class="option-card card">
-                    <div class="d-flex justify-content-between gap-3"><h2>Express needs clearly</h2><span aria-hidden="true">→</span></div>
-                    <p>Write, simplify, and show a request.</p>
-                </a>
-                <a href="directions.html" class="option-card card">
-                    <div class="d-flex justify-content-between gap-3"><h2>Ask for directions</h2><span aria-hidden="true">→</span></div>
-                    <p>Get help finding your way.</p>
-                </a>
-                <a href="travel-phrases.html" class="option-card card">
-                    <div class="d-flex justify-content-between gap-3"><h2>Useful Travel Phrases</h2><span aria-hidden="true">→</span></div>
-                    <p>Use common phrases while travelling.</p>
-                </a>
+
+<body>
+    <div class="welcome-page">
+        <header class="site-header">Communication Help</header>
+
+        <main>
+            <div class="welcome-content">
+                <h1>Welcome to Communication Help</h1>
+                <p>Find useful travel phrases and communicate with confidence wherever you go.</p>
+                <a class="login-button" href="login.html">Log in / Sign up</a>
             </div>
         </main>
-        <app-navigation active="home"></app-navigation>
     </div>
 </body>
+
 </html>

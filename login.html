@@ -2,91 +2,221 @@
 <html lang="en">
 
 <head>
-    <title>My BCIT Project</title>
-    <meta name="comp1800 template" content="My 1800 App">
-
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login / Sign Up | Communication Help</title>
 
-    <!-- Web Components for shared navbar and footer layout -->
-    <script type="module" src="/src/components/site-navbar.js"></script>
-    <script type="module" src="/src/components/site-footer.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #202020;
+            background-color: #f7f7f7;
+        }
+
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #dedede;
+            background-color: #fff;
+        }
+
+        .brand {
+            color: inherit;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 460px;
+            margin: auto;
+            padding: 36px 24px;
+        }
+
+        .auth-card {
+            padding: 32px 24px;
+            border: 1px solid #dedede;
+            border-radius: 18px;
+            background-color: #fff;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: 1.9rem;
+        }
+
+        .intro {
+            margin: 0 0 28px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .form-field {
+            margin-bottom: 18px;
+        }
+
+        .form-field label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 0.95rem;
+            font-weight: bold;
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #aaa;
+            border-radius: 9px;
+            font: inherit;
+            background: #fff;
+            color: #202020;
+        }
+
+        .form-control:focus-visible,
+        .auth-button:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #6d92c9;
+            outline-offset: 2px;
+        }
+
+        .auth-button {
+            width: 100%;
+            margin-top: 8px;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 9px;
+            background: #222;
+            color: #fff;
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .auth-button:hover {
+            background: #444;
+        }
+
+        .switch-view {
+            margin: 22px 0 0;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .switch-view a {
+            color: #1d4f84;
+        }
+
+        .alert {
+            margin-bottom: 20px;
+            padding: 12px 14px;
+            border: 1px solid #e5a6a6;
+            border-radius: 9px;
+            background: #fff1f1;
+            color: #842727;
+        }
+
+        /* Keep the same visibility class used by loginSignup.js. */
+        .d-none {
+            display: none !important;
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 24px 16px;
+            }
+
+            .auth-card {
+                padding: 28px 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <!------------------------------>
-    <!-- Your HTML Layout go here -->
-    <!------------------------------>
+    <div class="login-page">
+        <header class="page-header">
+            <a class="brand" href="index.html">Communication Help</a>
+        </header>
 
-    <!-- our own navbar goes here -->
-    <site-navbar></site-navbar>
+        <main class="auth-container">
+            <div class="auth-card">
+                <!-- Keep this ID: loginSignup.js displays error messages here. -->
+                <div id="authAlert" class="alert alert-danger d-none" role="alert"></div>
 
-    <!-- Main content goes here -->
+                <!-- Login -->
+                <section id="loginView" aria-label="Log in">
+                    <h1>Log in</h1>
+                    <p class="intro">Welcome back to Communication Help.</p>
 
-    <!-- our own footer goes here -->
-    <site-footer></site-footer>
+                    <form id="loginForm" novalidate>
+                        <div class="form-field">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" class="form-control" placeholder="Enter your email"
+                                autocomplete="email" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" class="form-control"
+                                placeholder="Enter your password" autocomplete="current-password" required>
+                        </div>
+                        <button type="submit" class="auth-button">Log in</button>
+                    </form>
 
-    <!---------------------------------------------->
-    <!-- Your own JavaScript scripts go here      -->
-    <!---------------------------------------------->
+                    <p class="switch-view">
+                        Don't have an account? <a href="#" id="toSignup">Sign up</a>
+                    </p>
+                </section>
 
+                <!-- Sign up: hidden initially; shown by loginSignup.js. -->
+                <section id="signupView" class="d-none" aria-label="Sign up">
+                    <h1>Sign up</h1>
+                    <p class="intro">Create an account to get started.</p>
+
+                    <form id="signupForm" novalidate>
+                        <div class="form-field">
+                            <label for="signupName">Full name</label>
+                            <input type="text" id="signupName" class="form-control" placeholder="First and last name"
+                                autocomplete="name" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="signupEmail">Email</label>
+                            <input type="email" id="signupEmail" class="form-control" placeholder="Enter your email"
+                                autocomplete="email" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" class="form-control"
+                                placeholder="Create a password" autocomplete="new-password" required>
+                        </div>
+                        <button type="submit" class="auth-button">Create account</button>
+                    </form>
+
+                    <p class="switch-view">
+                        Already have an account? <a href="#" id="toLogin">Log in</a>
+                    </p>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Preserve the existing project modules and authentication code. -->
     <script type="module" src="/src/app.js"></script>
-
-    <!---------------------------------------------->
-    <!-- Your own JavaScript scripts go here      -->
-    <!---------------------------------------------->
-
-    <!-- Firebase and authentication related scripts -->
-    <!-- The order of loading matters -->
     <script type="module" src="/src/firebaseConfig.js"></script>
     <script type="module" src="/src/authentication.js"></script>
     <script type="module" src="/src/loginSignup.js"></script>
-
 </body>
-    <div class="container py-5" style="max-width: 420px;">
-        <!-- Alerts -->
-        <div id="authAlert" class="alert alert-danger d-none" role="alert"></div>
-
-        <!-- Login -->
-        <div id="loginView">
-            <h3 class="mb-3 text-center">Login</h3>
-            <form id="loginForm" novalidate>
-                <div class="mb-3">
-                    <input type="email" id="loginEmail" class="form-control" placeholder="Email" required />
-                </div>
-                <div class="mb-3">
-                    <input type="password" id="loginPassword" class="form-control" placeholder="Password" required />
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Login</button>
-            </form>
-            <small class="d-block mt-3 text-center">
-                Don’t have an account?
-                <a href="#" id="toSignup">Sign up</a>
-            </small>
-        </div>
-
-        <!-- Signup -->
-        <div id="signupView" class="d-none">
-            <h3 class="mb-3 text-center">Sign Up</h3>
-            <form id="signupForm" novalidate>
-                <div class="mb-3">
-                    <input type="text" id="signupName" class="form-control" placeholder="First and Last Name"
-                        aria-label="Full name" required />
-                </div>
-                <div class="mb-3">
-                    <input type="email" id="signupEmail" class="form-control" placeholder="Email" required />
-                </div>
-                <div class="mb-3">
-                    <input type="password" id="signupPassword" class="form-control" placeholder="Password" required />
-                </div>
-                <button type="submit" class="btn btn-success w-100">Create Account</button>
-            </form>
-            <small class="d-block mt-3 text-center">
-                Already have an account?
-                <a href="#" id="toLogin">Login</a>
-            </small>
-        </div>
-    </div>
 
 </html>
