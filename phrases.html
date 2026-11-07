@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <script type="module" src="/src/favorites.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Frequently used Phrases | Communication Help</title>
+    <script type="module" src="/src/navigation.js"></script>
+</head>
+<body class="communication-app">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="page container-fluid">
+        <header class="page-header">
+            <a class="back-link" href="index.html">‹ Back to Home</a>
+            <h1>Frequently used Phrases</h1>
+            <p class="subtitle">Choose an example request to open.</p>
+        </header>
+        <main id="main-content" class="page-content">
+            <div class="d-grid gap-3">
+                <div class="d-flex align-items-center gap-2">
+                    <a href="express-needs.html" class="option-card card flex-grow-1">
+                        <h2>Where can I get drinking water?</h2>
+                        <p>Drinking water</p>
+                    </a>
+                    <button class="favorite-btn" type="button" data-id="water" data-phrase="Where can I get drinking water?"
+                        aria-pressed="false">
+                        ♡
+                    </button>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <a href="travel-phrases.html#emergency" class="option-card card flex-grow-1">
+                        <h2>Please call an ambulance.</h2>
+                        <p>Emergency - Japanese translation</p>
+                    </a>
+                    <button class="favorite-btn" type="button" data-id="ambulance" data-phrase="Please call an ambulance."
+                        aria-pressed="false">
+                        ♡
+                    </button>
+                </div>
+
+                <p class="example-note mt-2">These are sample phrases. Saving your own requests will be added later.</p>
+            </div>
+        </main>
+        <app-navigation active="phrases"></app-navigation>
+    </div>
+    <script type="module" src="/src/favourite.js"></script>
+</body>
+</html>
