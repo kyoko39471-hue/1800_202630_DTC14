@@ -8,7 +8,9 @@
 
     <style>
         /* Match the mobile layout of main.html. */
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
@@ -48,8 +50,15 @@
             text-decoration: none;
         }
 
-        .back-link:hover, .back-link:focus-visible { background: #f1f1f1; }
-        .back-link svg { width: 34px; height: 34px; }
+        .back-link:hover,
+        .back-link:focus-visible {
+            background: #f1f1f1;
+        }
+
+        .back-link svg {
+            width: 34px;
+            height: 34px;
+        }
 
         .page-header h1 {
             margin: 0;
@@ -58,7 +67,10 @@
             overflow-wrap: anywhere;
         }
 
-        .page-content { flex: 1; padding: 34px 18px; }
+        .page-content {
+            flex: 1;
+            padding: 34px 18px;
+        }
 
         /* Design option #1 in the wireframe: two phrase cards per row. */
         .phrase-grid {
@@ -90,15 +102,36 @@
             color: #707070;
         }
 
-        .message { margin: 0; color: #666666; }
+        .message {
+            margin: 0;
+            color: #666666;
+        }
 
         @media (max-width: 350px) {
-            .page-header { gap: 12px; padding: 25px 14px 20px; }
-            .page-content { padding: 24px 12px; }
-            .phrase-grid { gap: 10px; }
-            .phrase-card { padding: 12px 10px; }
-            .phrase-english { font-size: 16px; }
-            .phrase-translation { font-size: 14px; }
+            .page-header {
+                gap: 12px;
+                padding: 25px 14px 20px;
+            }
+
+            .page-content {
+                padding: 24px 12px;
+            }
+
+            .phrase-grid {
+                gap: 10px;
+            }
+
+            .phrase-card {
+                padding: 12px 10px;
+            }
+
+            .phrase-english {
+                font-size: 16px;
+            }
+
+            .phrase-translation {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -107,8 +140,8 @@
     <div class="app-page">
         <header class="page-header">
             <a class="back-link" href="main.html" aria-label="Back to categories">
-                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.8"
-                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
                     <path d="M24 7L11 20L24 33M12 20H35" />
                 </svg>
             </a>
@@ -116,12 +149,10 @@
         </header>
 
         <main class="page-content">
-            <p id="category-message" class="message" role="status">Loading category...</p>
+
             <div id="phrases-go-here" class="phrase-grid" aria-label="Travel phrases"></div>
         </main>
 
-        <!-- Like the hikeCardTemplate in the instructor's main.html:
-             JavaScript clones this template for each phrase. -->
         <template id="phraseCardTemplate">
             <article class="phrase-card">
                 <p class="phrase-english"></p>
@@ -130,7 +161,6 @@
         </template>
     </div>
 
-    <!-- Uses the URL category parameter. Firestore rendering can be added here later. -->
     <script type="module" src="/src/eachCategory.js"></script>
 </body>
 

@@ -25,7 +25,6 @@ if (!Object.hasOwn(categoryNames, category)) {
     title.textContent = categoryName;
     document.title = `${categoryName} | Communication Help`;
 
-    // UI preview only. Firestore will be connected later.
     for (let i = 0; i < 4; i++) {
         const card = template.content.cloneNode(true);
 
@@ -35,6 +34,4 @@ if (!Object.hasOwn(categoryNames, category)) {
         container.appendChild(card);
     }
 
-    message.textContent =
-        "Layout preview — phrases will be loaded from Firestore.";
 }
