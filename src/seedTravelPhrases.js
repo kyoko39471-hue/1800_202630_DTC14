@@ -1,3 +1,4 @@
+
 import { db } from "./firebaseConfig.js";
 import { categories } from "./travelPhrasesData.js";
 
@@ -8,28 +9,22 @@ import {
 } from "firebase/firestore";
 
 export async function seedTravelPhrases() {
-
     try {
-        // Loop through each category
         for (const category of categories) {
 
-            // Reference to a category document
-            const categoryRef = doc(
-                db,
-                "categories",
-                category.id
-            );
-
-            // Create category if it does not exist
+            // Category document
+            const categoryRef = doc(db, "categories", category.id);
             const categorySnap = await getDoc(categoryRef);
 
-            if (!categorySnap.exists()) {
+            if (!categorySnap.exists() ||
+                categorySnap.data().name !== category.name) {
+
                 await setDoc(categoryRef, {
                     name: category.name
-                });
+                }, { merge: true });
             }
 
-            // Loop through phrases in this category
+            // Phrase documents
             for (const phrase of category.phrases) {
 
                 const phraseRef = doc(
@@ -41,19 +36,21 @@ export async function seedTravelPhrases() {
                 );
 
                 const phraseSnap = await getDoc(phraseRef);
+                const english = phrase.translations.english;
 
-                // Create phrase if it does not exist
-                if (!phraseSnap.exists()) {
+                // Create or update only when needed
+                if (!phraseSnap.exists() ||
+                    phraseSnap.data().english !== english) {
+
                     await setDoc(phraseRef, {
-                        english: phrase.translations.english
-                    });
+                        english: english
+                    }, { merge: true });
                 }
 
-                // Loop through translations
+                // Translation documents
                 for (const [language, text]
                     of Object.entries(phrase.translations)) {
 
-                    // English is stored in the phrase document
                     if (language === "english") {
                         continue;
                     }
@@ -68,22 +65,23 @@ export async function seedTravelPhrases() {
                         language
                     );
 
-                    const translationSnap =
-                        await getDoc(translationRef);
+                    const translationSnap = await getDoc(translationRef);
 
-                    // Create translation if it does not exist
-                    if (!translationSnap.exists()) {
+                    // Create or update only when needed
+                    if (!translationSnap.exists() ||
+                        translationSnap.data().text !== text) {
+
                         await setDoc(translationRef, {
                             text: text
-                        });
+                        }, { merge: true });
                     }
                 }
             }
         }
 
-        console.log("Travel phrases seeding completed!");
+        console.log("Travel phrases synchronized with Firestore!");
 
     } catch (error) {
-        console.error("Error seeding travel phrases:", error);
+        console.error("Error syncing travel phrases:", error);
     }
 }
