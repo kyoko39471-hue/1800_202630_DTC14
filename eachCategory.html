@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Category | Communication Help</title>
+
+    <style>
+        /* Match the mobile layout of main.html. */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: #171717;
+            background-color: #ffffff;
+        }
+
+        .app-page {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            margin: 0 auto;
+            border-left: 1px solid #eeeeee;
+            border-right: 1px solid #eeeeee;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 36px 22px 24px;
+            border-bottom: 2px solid #222222;
+        }
+
+        .back-link {
+            flex-shrink: 0;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .back-link:hover,
+        .back-link:focus-visible {
+            background: #f1f1f1;
+        }
+
+        .back-link svg {
+            width: 34px;
+            height: 34px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: clamp(23px, 6vw, 32px);
+            line-height: 1.2;
+            overflow-wrap: anywhere;
+        }
+
+        .page-content {
+            flex: 1;
+            padding: 34px 18px;
+        }
+
+        /* Design option #1 in the wireframe: two phrase cards per row. */
+        .phrase-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .phrase-card {
+            min-width: 0;
+            min-height: 112px;
+            border: 2px solid #252525;
+            border-radius: 14px;
+            padding: 18px 14px;
+            overflow-wrap: anywhere;
+        }
+
+        .phrase-english {
+            margin: 0 0 8px;
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+        .phrase-translation {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.4;
+            color: #707070;
+        }
+
+        @media (max-width: 350px) {
+            .page-header {
+                gap: 12px;
+                padding: 25px 14px 20px;
+            }
+
+            .page-content {
+                padding: 24px 12px;
+            }
+
+            .phrase-grid {
+                gap: 10px;
+            }
+
+            .phrase-card {
+                padding: 12px 10px;
+            }
+
+            .phrase-english {
+                font-size: 16px;
+            }
+
+            .phrase-translation {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-page">
+        <header class="page-header">
+            <a class="back-link" href="main.html" aria-label="Back to categories">
+                <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <path d="M24 7L11 20L24 33M12 20H35" />
+                </svg>
+            </a>
+            <h1 id="category-title">Category</h1>
+        </header>
+
+        <main class="page-content">
+
+            <div id="phrases-go-here" class="phrase-grid" aria-label="Travel phrases"></div>
+        </main>
+
+        <template id="phraseCardTemplate">
+            <article class="phrase-card">
+                <p class="phrase-english"></p>
+                <p class="phrase-translation"></p>
+            </article>
+        </template>
+    </div>
+
+    <!-- Load app.js to trigger Firestore synchronization -->
+    <script type="module" src="/src/app.js"></script>
+
+    <!-- Load category phrases -->
+    <script type="module" src="/src/eachCategory.js"></script>
+</body>
+
+</html>
