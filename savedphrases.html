@@ -3,183 +3,126 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Saved Phrases</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Saved Phrases | Communication Help</title>
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 20px;
+            color: #171717;
+            background: white;
         }
 
-        input,
-        select,
-        button {
-            padding: 10px;
-            margin: 5px 0;
+        .app-page {
+            max-width: 600px;
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #eee;
+            border-right: 1px solid #eee;
         }
 
-        input {
-            width: 90%;
+        .page-header {
+            padding: 30px 22px;
+            border-bottom: 2px solid #222;
         }
 
-        button {
+        .back-link {
+            color: #222;
+            text-decoration: none;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin-bottom: 0;
+        }
+
+        .page-content {
+            flex: 1;
+            padding: 24px 18px;
+        }
+
+        #phraseList {
+            list-style: none;
+            padding: 0;
+        }
+
+        .saved-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 2px solid #222;
+            border-radius: 12px;
+        }
+
+        .saved-item span {
+            overflow-wrap: anywhere;
+        }
+
+        .remove-btn {
+            padding: 8px 12px;
+            background: white;
+            border: 1px solid #222;
+            border-radius: 8px;
             cursor: pointer;
         }
 
-        li {
-            margin: 10px 0;
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            border-top: 2px solid #222;
+        }
+
+        .bottom-nav a {
+            color: #222;
+            font-size: 18px;
+            text-decoration: none;
         }
     </style>
 </head>
 
 <body>
 
-    <h1>Saved Phrases</h1>
+    <div class="app-page">
 
-    <label for="user">Select Test User:</label>
-    <select id="user">
-        <option value="userA">User A</option>
-        <option value="userB">User B</option>
-    </select>
+        <header class="page-header">
+            <a href="main.html" class="back-link">
+                ← Back to Home
+            </a>
+            <h1>Saved Phrases</h1>
+        </header>
 
-    <h2>Save a Phrase</h2>
+        <main class="page-content">
+            <p id="statusMessage">
+                Loading saved phrases...
+            </p>
 
-    <input type="text" id="phraseInput" placeholder="Enter a phrase">
+            <ul id="phraseList"></ul>
+        </main>
 
-    <button onclick="savePhrase()">
-        Save Phrase
-    </button>
+        <nav class="bottom-nav" aria-label="Main navigation">
+            <a href="main.html">Home</a>
+            <a href="savedphrases.html" aria-current="page">
+                Saved
+            </a>
+            <a href="profile.html">Profile</a>
+        </nav>
 
-    <h2>My Saved Phrases</h2>
+    </div>
 
-    <ul id="phraseList"></ul>
-
-    <button onclick="testUserPhrases()">
-        Test User-Specific Phrases
-    </button>
-
-    <p id="testResult"></p>
-
-    <script>
-        // Get selected test user
-        function getCurrentUser() {
-            return document.getElementById("user").value;
-        }
-
-        // Get phrases for a specific user
-        function getSavedPhrases(userId) {
-            const key = "savedPhrases_" + userId;
-
-            return JSON.parse(
-                localStorage.getItem(key) || "[]"
-            );
-        }
-
-        // TASK 1: Save Phrase Functionality
-        function savePhrase() {
-            const userId = getCurrentUser();
-
-            const input =
-                document.getElementById("phraseInput");
-
-            const phrase = input.value.trim();
-
-            if (phrase === "") {
-                alert("Please enter a phrase.");
-                return;
-            }
-
-            const phrases = getSavedPhrases(userId);
-
-            phrases.push(phrase);
-
-            localStorage.setItem(
-                "savedPhrases_" + userId,
-                JSON.stringify(phrases)
-            );
-
-            input.value = "";
-
-            displaySavedPhrases();
-
-            alert("Phrase saved successfully!");
-        }
-
-        // TASK 2: Retrieve and Display Saved Phrases
-        function displaySavedPhrases() {
-            const userId = getCurrentUser();
-
-            const phrases = getSavedPhrases(userId);
-
-            const phraseList =
-                document.getElementById("phraseList");
-
-            phraseList.innerHTML = "";
-
-            if (phrases.length === 0) {
-                const item = document.createElement("li");
-                item.textContent = "No saved phrases yet.";
-                phraseList.appendChild(item);
-                return;
-            }
-
-            phrases.forEach(function (phrase) {
-                const item = document.createElement("li");
-                item.textContent = phrase;
-                phraseList.appendChild(item);
-            });
-        }
-
-        // TASK 3: Test User-Specific Saved Phrases
-        function testUserPhrases() {
-            const testA = "__testUserA";
-            const testB = "__testUserB";
-
-            const keyA = "savedPhrases_" + testA;
-            const keyB = "savedPhrases_" + testB;
-
-            try {
-                localStorage.setItem(
-                    keyA,
-                    JSON.stringify(["Phrase for A"])
-                );
-
-                localStorage.setItem(
-                    keyB,
-                    JSON.stringify(["Phrase for B"])
-                );
-
-                const userAPhrases = getSavedPhrases(testA);
-                const userBPhrases = getSavedPhrases(testB);
-
-                const passed =
-                    userAPhrases.includes("Phrase for A") &&
-                    !userAPhrases.includes("Phrase for B") &&
-                    userBPhrases.includes("Phrase for B") &&
-                    !userBPhrases.includes("Phrase for A");
-
-                document.getElementById("testResult")
-                    .textContent = passed
-                        ? "PASS: Demo users have separate phrase lists."
-                        : "FAIL: User phrase separation failed.";
-
-            } finally {
-                localStorage.removeItem(keyA);
-                localStorage.removeItem(keyB);
-            }
-        }
-
-        // Reload phrases when user changes
-        document.getElementById("user")
-            .addEventListener(
-                "change",
-                displaySavedPhrases
-            );
-
-        // Display saved phrases on page load
-        displaySavedPhrases();
-    </script>
+    <script type="module" src="/src/savedphrases.js"></script>
 
 </body>
 
