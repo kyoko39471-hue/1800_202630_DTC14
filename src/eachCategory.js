@@ -1,4 +1,4 @@
-
+import { setupFavouriteButton } from "./favourite.js";
 import { db } from "/src/firebaseConfig.js";
 
 import {
@@ -39,8 +39,13 @@ async function displayPhrases() {
 
         const querySnapshot = await getDocs(phrasesRef);
 
-        for (const phraseDoc of querySnapshot.docs) {
-            const english = phraseDoc.data().english;
+        if (querySnapshot.empty) {
+            container.innerHTML = "<p class='empty-state'>No phrases available for this category yet.</p>";
+            return;
+        }
+
+        const cards = await Promise.all(querySnapshot.docs.map(async (phraseDoc) => {
+            const english = phraseDoc.data().english ?? "Phrase";
 
             const translationRef = doc(
                 db,
@@ -58,15 +63,23 @@ async function displayPhrases() {
                 ? translationSnap.data().text
                 : "Translation unavailable";
 
-            // HTML
             const card = template.content.cloneNode(true);
-
-            // Firestore
             card.querySelector(".phrase-english").textContent = english;
             card.querySelector(".phrase-translation").textContent = translation;
 
-            // Card to the page
+            const button = card.querySelector(".favorite-btn");
+            button.dataset.id = `${category}_${phraseDoc.id}`;
+            button.dataset.phrase = english;
+
+            return card;
+        }));
+
+        container.innerHTML = "";
+
+        for (const card of cards) {
+            const button = card.querySelector(".favorite-btn");
             container.appendChild(card);
+            setupFavouriteButton(button);
         }
 
     } catch (error) {
