@@ -1,4 +1,3 @@
-
 import { defineConfig } from 'vite';
 import { fileURLToPath } from 'node:url';
 
@@ -8,18 +7,16 @@ const pages = [
     'main',
     'eachCategory',
     'savedphrases',
-    'profile'
+    'profile',
 ];
 
 export default defineConfig({
     build: {
         rollupOptions: {
             input: Object.fromEntries(
-                pages.map(page => [
+                pages.map((page) => [
                     page,
-                    fileURLToPath(
-                        new URL(`./${page}.html`, import.meta.url)
-                    )
+                    fileURLToPath(new URL(`./${page}.html`, import.meta.url)),
                 ])
             ),
         },

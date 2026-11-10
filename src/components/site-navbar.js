@@ -1,11 +1,11 @@
 // Import Firebase authentication tools
-import { logoutUser, onAuthReady } from '/src/authentication.js';   // Our function to log out the user
+import { logoutUser, onAuthReady } from '/src/authentication.js'; // Our function to log out the user
 // import { onAuthReady } from "/src/authentication.js";  // Our function co get authenticated user
 class SiteNavbar extends HTMLElement {
     constructor() {
         super();
         this.renderNavbar();
-        this.renderAuthControls();        // This will add either login or logout button, depending on whether or not someone is logged in
+        this.renderAuthControls(); // This will add either login or logout button, depending on whether or not someone is logged in
     }
 
     renderNavbar() {
@@ -54,15 +54,17 @@ class SiteNavbar extends HTMLElement {
         authControls.innerHTML = `<div class="btn btn-outline-light" style="visibility: hidden; min-width: 80px;">Log out</div>`;
 
         // Pass a callback that runs when Firebase reports the login status
-        onAuthReady(function (user) { // Receives the user object (or null)
+        onAuthReady(function (user) {
+            // Receives the user object (or null)
 
-            if (user) { // User is logged in
+            if (user) {
+                // User is logged in
                 authControls.innerHTML = `<button class="btn btn-outline-light" id="signOutBtn" type="button" style="min-width: 80px;">Log out</button>`;
 
                 const signOutBtn = authControls.querySelector('#signOutBtn');
                 signOutBtn.addEventListener('click', logoutUser); // Callback: runs when Log out is clicked
-
-            } else { // User is NOT logged in, and gets redirected to login page if user clicks the login button
+            } else {
+                // User is NOT logged in, and gets redirected to login page if user clicks the login button
                 authControls.innerHTML = `<a class="btn btn-outline-light" id="loginBtn" href="/login.html" style="min-width: 80px;">Log in</a>`;
             }
         });

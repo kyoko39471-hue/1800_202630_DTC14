@@ -38,37 +38,44 @@ function initAuthUI() {
     function setBusy(value, message = '') {
         busy = value;
         status.textContent = message;
-        [loginForm, signupForm].forEach(form => {
+        [loginForm, signupForm].forEach((form) => {
             form.setAttribute('aria-busy', String(value));
-            form.querySelectorAll('input, select, button').forEach(control => control.disabled = value);
+            form.querySelectorAll('input, select, button').forEach(
+                (control) => (control.disabled = value)
+            );
         });
     }
 
     function profileError(error, signedUp) {
-        const cause = error?.code === 'permission-denied'
-            ? 'Firestore did not allow your profile to be saved.'
-            : 'Your profile could not be saved. Check your connection and try again.';
+        const cause =
+            error?.code === 'permission-denied'
+                ? 'Firestore did not allow your profile to be saved.'
+                : 'Your profile could not be saved. Check your connection and try again.';
         return `${signedUp ? 'Your account was created.' : 'Your login was successful.'} ${cause} ${signedUp ? 'Submit again to retry, or log in to finish later.' : 'Log in again to retry.'}`;
     }
 
-    document.getElementById('toSignup').addEventListener('click', event => {
+    document.getElementById('toSignup').addEventListener('click', (event) => {
         event.preventDefault();
         signupLanguage.value = loginLanguage.value;
         showView(true);
     });
-    document.getElementById('toLogin').addEventListener('click', event => {
+    document.getElementById('toLogin').addEventListener('click', (event) => {
         event.preventDefault();
         showView(false);
     });
-    loginLanguage.addEventListener('change', () => { loginLanguageChanged = true; });
+    loginLanguage.addEventListener('change', () => {
+        loginLanguageChanged = true;
+    });
 
-    loginForm.addEventListener('submit', async event => {
+    loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (busy || !loginForm.reportValidity()) return;
         clearError();
         const email = document.getElementById('loginEmail').value.trim();
         const password = document.getElementById('loginPassword').value;
-        const preferredLanguage = loginLanguageChanged ? loginLanguage.value : undefined;
+        const preferredLanguage = loginLanguageChanged
+            ? loginLanguage.value
+            : undefined;
         setBusy(true, 'Logging in…');
         let signedIn = false;
         try {
@@ -79,12 +86,14 @@ function initAuthUI() {
             document.getElementById('loginPassword').value = '';
             window.location.assign('main.html');
         } catch (error) {
-            showError(signedIn ? profileError(error, false) : authErrorMessage(error));
+            showError(
+                signedIn ? profileError(error, false) : authErrorMessage(error)
+            );
             setBusy(false);
         }
     });
 
-    signupForm.addEventListener('submit', async event => {
+    signupForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         if (busy || !signupForm.reportValidity()) return;
         clearError();
@@ -92,24 +101,40 @@ function initAuthUI() {
         const email = document.getElementById('signupEmail').value.trim();
         const password = document.getElementById('signupPassword').value;
         const preferredLanguage = signupLanguage.value;
-        if (!name) { showError('Please enter your full name.'); return; }
+        if (!name) {
+            showError('Please enter your full name.');
+            return;
+        }
         setBusy(true, 'Creating your account…');
         try {
             // A failed profile write must not create a second Auth account on retry.
-            if (!pendingSignupUser || pendingSignupUser.email?.toLowerCase() !== email.toLowerCase() || auth.currentUser?.uid !== pendingSignupUser.uid) {
+            if (
+                !pendingSignupUser ||
+                pendingSignupUser.email?.toLowerCase() !==
+                    email.toLowerCase() ||
+                auth.currentUser?.uid !== pendingSignupUser.uid
+            ) {
                 pendingSignupUser = null;
                 pendingSignupUser = await signupUser(name, email, password);
             }
             status.textContent = 'Saving your profile…';
-            await saveUserProfile(pendingSignupUser, { name, preferredLanguage });
+            await saveUserProfile(pendingSignupUser, {
+                name,
+                preferredLanguage,
+            });
             document.getElementById('signupPassword').value = '';
             window.location.assign('main.html');
         } catch (error) {
-            showError(pendingSignupUser ? profileError(error, true) : authErrorMessage(error));
+            showError(
+                pendingSignupUser
+                    ? profileError(error, true)
+                    : authErrorMessage(error)
+            );
             setBusy(false);
         }
     });
 }
 
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initAuthUI, { once: true });
+if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', initAuthUI, { once: true });
 else initAuthUI();
