@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profile | Communication Help</title>
-</head>
-
-<body>
-    <h1>My Profile</h1>
-    <p>Profile page is under development.</p>
-    <a href="main.html">Back to Home</a>
-</body>
-
-</html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My profile | Communication Help</title></head>
+<body><div class="app-page"><header class="app-header" data-app-header></header><main class="app-content profile-content"><div class="heading"><h1>My profile</h1><p>Your language and account.</p></div><p id="pageStatus" class="page-status" role="status" aria-live="polite">Loading your profile…</p><button id="retryButton" class="action" hidden>Retry</button><div class="profile-field"><span class="field-label">Name</span><p id="profileName">—</p></div><div class="profile-field"><span class="field-label">Email</span><p id="profileEmail">—</p></div><form id="profileForm"><div class="profile-field"><label for="preferredLanguage">Translate phrases to</label><select id="preferredLanguage" disabled></select><button class="action action-primary" id="saveLanguage" type="submit" disabled>Save language</button></div></form><details class="profile-details"><summary>How to use Communication Help</summary><ol><li>Choose a category on Home.</li><li>Read the English phrase and translation.</li><li>Tap the heart to keep a phrase in Saved.</li></ol></details></main><nav class="bottom-nav" data-app-nav aria-label="Main navigation"></nav></div><script type="module" src="/src/profile.js"></script></body></html>
