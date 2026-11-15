@@ -4,9 +4,9 @@ import {
     doc,
     getDoc,
     getDocs,
-    setDoc,
-    deleteDoc,
-    serverTimestamp,
+    updateDoc,
+    arrayUnion,
+    arrayRemove,
 } from 'firebase/firestore';
 
 export const categoryNames = {
@@ -68,11 +68,39 @@ export async function readCategory(categoryId, language) {
     );
 }
 export async function readSaved(user) {
-    const snapshot = await getDocs(
-        collection(db, 'users', user.uid, 'savedPhrases')
+    const snapshot = await getDoc(
+        doc(db, 'users', user.uid)
     );
-    return snapshot.docs.map((item) => ({ savedId: item.id, ...item.data() }));
+
+    if (!snapshot.exists()) return [];
+
+    const saved = snapshot.data().savedPhrases ?? [];
+
+    if (!Array.isArray(saved)) {
+        throw new Error('Invalid saved phrases data.');
+    }
+
+    return saved.flatMap((savedId) => {
+        const categoryId = Object.keys(categoryNames).find(
+            (category) =>
+                typeof savedId === 'string' &&
+                savedId.startsWith(`${category}_`)
+        );
+
+        if (!categoryId) return [];
+
+        const phraseId = savedId.slice(categoryId.length + 1);
+
+        try {
+            savedKey(categoryId, phraseId);
+        } catch {
+            return [];
+        }
+
+        return [{ savedId, categoryId, phraseId }];
+    });
 }
+
 export async function readSavedPhrase(reference, language) {
     try {
         savedKey(reference.categoryId, reference.phraseId);
@@ -102,19 +130,20 @@ export async function readSavedPhrase(reference, language) {
     );
 }
 export async function setPhraseSaved(user, phrase, save) {
-    if (!user?.uid) throw new Error('Please log in.');
-    const reference = doc(
-        db,
-        'users',
-        user.uid,
-        'savedPhrases',
-        savedKey(phrase.categoryId, phrase.phraseId)
+    if (!user?.uid) {
+        throw new Error('Please log in.');
+    }
+
+    const reference = doc(db, 'users', user.uid);
+
+    const key = savedKey(
+        phrase.categoryId,
+        phrase.phraseId
     );
-    if (save)
-        await setDoc(reference, {
-            categoryId: phrase.categoryId,
-            phraseId: phrase.phraseId,
-            createdAt: serverTimestamp(),
-        });
-    else await deleteDoc(reference);
+
+    await updateDoc(reference, {
+        savedPhrases: save
+            ? arrayUnion(key)
+            : arrayRemove(key)
+    });
 }

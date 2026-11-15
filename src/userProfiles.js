@@ -41,7 +41,11 @@ export async function saveUserProfile(user, { name, preferredLanguage } = {}) {
         preferredLanguage: savedLanguage,
         updatedAt: serverTimestamp(),
     };
-    if (!snapshot.exists()) profile.createdAt = serverTimestamp();
+    if (!snapshot.exists()) {
+        profile.createdAt = serverTimestamp();
+        profile.savedPhrases = [];
+    }
+
     await setDoc(reference, profile, { merge: true });
     return { ...existing, ...profile };
 }
