@@ -1,3 +1,43 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Saved phrases | Communication Help</title></head>
-<body><div class="app-page"><header class="app-header" data-app-header></header><main class="app-content"><div class="heading"><h1>Saved phrases</h1><p id="languageLabel">Keep useful phrases close at hand.</p></div><p id="pageStatus" class="page-status" role="status" aria-live="polite">Loading saved phrases…</p><button id="retryButton" class="action" hidden>Retry</button><div id="phrases-go-here" class="phrase-list"></div><section id="emptyState" class="empty-state" hidden><span data-icon="bookmark"></span><h2>No favourite phrases yet</h2><p>Tap the heart on a phrase to find it here.</p><a class="action action-primary" href="main.html">Browse categories</a></section></main><nav class="bottom-nav" data-app-nav aria-label="Main navigation"></nav></div><script type="module" src="/src/savedPhrases.js"></script></body></html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Saved phrases | Communication Help</title>
+    </head>
+    <body>
+        <div class="app-page">
+            <header class="app-header" data-app-header></header>
+            <main class="app-content">
+                <div class="heading">
+                    <h1>Saved phrases</h1>
+                    <p id="languageLabel">Keep useful phrases close at hand.</p>
+                </div>
+                <p
+                    id="pageStatus"
+                    class="page-status"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Loading saved phrases…
+                </p>
+                <button id="retryButton" class="action" hidden>Retry</button>
+                <div id="phrases-go-here" class="phrase-list"></div>
+                <section id="emptyState" class="empty-state" hidden>
+                    <span data-icon="bookmark"></span>
+                    <h2>No saved phrases yet</h2>
+                    <p>Tap the bookmark on a phrase to find it here.</p>
+                    <a class="action action-primary" href="main.html"
+                        >Browse categories</a
+                    >
+                </section>
+            </main>
+            <nav
+                class="bottom-nav"
+                data-app-nav
+                aria-label="Main navigation"
+            ></nav>
+        </div>
+        <script type="module" src="/src/savedPhrases.js"></script>
+    </body>
+</html>

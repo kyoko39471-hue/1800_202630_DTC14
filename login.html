@@ -1,7 +1,135 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Log in | Communication Help</title><link rel="stylesheet" href="/styles/style.css"></head>
-<body><div class="app-page"><header class="app-header"><a class="brand" href="index.html">COMMUNICATION HELP</a></header><main class="auth-content"><div id="authAlert" class="auth-error d-none" role="alert"></div><p id="authStatus" class="page-status" role="status" aria-live="polite"></p>
-<section id="loginView"><div class="heading"><h1>Welcome back</h1><p>Log in to find your travel phrases.</p></div><form id="loginForm" class="auth-form">
-<div class="auth-field"><label for="loginEmail">Email</label><input id="loginEmail" type="email" autocomplete="email" required></div><div class="auth-field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required></div><div class="auth-field"><label for="loginLanguage">Preferred language</label><select id="loginLanguage"><option value="en" selected hidden>English (default)</option><option value="fr">French</option><option value="pa">Punjabi</option><option value="zh">Mandarin</option><option value="ur">Urdu</option><option value="es">Spanish</option></select><p class="muted">Leave unchanged to keep your saved language.</p></div><button class="action action-primary" type="submit">Log in</button></form><p class="auth-switch">New here? <a id="toSignup" href="#signup">Create an account</a></p></section>
-<section id="signupView" class="d-none"><div class="heading"><h1>Create an account</h1><p>Save phrases and choose your language.</p></div><form id="signupForm" class="auth-form"><div class="auth-field"><label for="signupName">Full name</label><input id="signupName" autocomplete="name" required></div><div class="auth-field"><label for="signupEmail">Email</label><input id="signupEmail" type="email" autocomplete="email" required></div><div class="auth-field"><label for="signupPassword">Password</label><input id="signupPassword" type="password" autocomplete="new-password" minlength="6" required><p class="muted">At least 6 characters.</p></div><div class="auth-field"><label for="signupLanguage">Preferred language</label><select id="signupLanguage"><option value="en" selected hidden>English (default)</option><option value="fr">French</option><option value="pa">Punjabi</option><option value="zh">Mandarin</option><option value="ur">Urdu</option><option value="es">Spanish</option></select></div><button class="action action-primary" type="submit">Create account</button></form><p class="auth-switch">Already have an account? <a id="toLogin" href="#login">Log in</a></p></section>
-</main></div><script type="module" src="/src/loginSignup.js"></script></body></html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Log in | Communication Help</title>
+        <link rel="stylesheet" href="/styles/style.css" />
+    </head>
+    <body>
+        <div class="app-page">
+            <header class="app-header" data-app-header></header>
+            <main class="auth-content">
+                <div
+                    id="authAlert"
+                    class="auth-error d-none"
+                    role="alert"
+                ></div>
+                <p
+                    id="authStatus"
+                    class="page-status"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+                <section id="loginView">
+                    <div class="heading">
+                        <h1>Welcome back</h1>
+                        <p>Log in to find your travel phrases.</p>
+                    </div>
+                    <form id="loginForm" class="auth-form">
+                        <div class="auth-field">
+                            <label for="loginEmail">Email</label
+                            ><input
+                                id="loginEmail"
+                                type="email"
+                                autocomplete="email"
+                                required
+                            />
+                        </div>
+                        <div class="auth-field">
+                            <label for="loginPassword">Password</label
+                            ><input
+                                id="loginPassword"
+                                type="password"
+                                autocomplete="current-password"
+                                required
+                            />
+                        </div>
+                        <div class="auth-field">
+                            <label for="loginLanguage">Preferred language</label
+                            ><select id="loginLanguage">
+                                <option value="en" selected hidden>
+                                    English (default)
+                                </option>
+                                <option value="fr">French</option>
+                                <option value="pa">Punjabi</option>
+                                <option value="zh">Mandarin</option>
+                                <option value="ur">Urdu</option>
+                                <option value="es">Spanish</option>
+                            </select>
+                            <p class="muted">
+                                Leave unchanged to keep your saved language.
+                            </p>
+                        </div>
+                        <button class="action action-primary" type="submit">
+                            Log in
+                        </button>
+                    </form>
+                    <p class="auth-switch">
+                        New here?
+                        <a id="toSignup" href="#signup">Create an account</a>
+                    </p>
+                </section>
+                <section id="signupView" class="d-none">
+                    <div class="heading">
+                        <h1>Create an account</h1>
+                        <p>Save phrases and choose your language.</p>
+                    </div>
+                    <form id="signupForm" class="auth-form">
+                        <div class="auth-field">
+                            <label for="signupName">Full name</label
+                            ><input
+                                id="signupName"
+                                autocomplete="name"
+                                required
+                            />
+                        </div>
+                        <div class="auth-field">
+                            <label for="signupEmail">Email</label
+                            ><input
+                                id="signupEmail"
+                                type="email"
+                                autocomplete="email"
+                                required
+                            />
+                        </div>
+                        <div class="auth-field">
+                            <label for="signupPassword">Password</label
+                            ><input
+                                id="signupPassword"
+                                type="password"
+                                autocomplete="new-password"
+                                minlength="6"
+                                required
+                            />
+                            <p class="muted">At least 6 characters.</p>
+                        </div>
+                        <div class="auth-field">
+                            <label for="signupLanguage"
+                                >Preferred language</label
+                            ><select id="signupLanguage">
+                                <option value="en" selected hidden>
+                                    English (default)
+                                </option>
+                                <option value="fr">French</option>
+                                <option value="pa">Punjabi</option>
+                                <option value="zh">Mandarin</option>
+                                <option value="ur">Urdu</option>
+                                <option value="es">Spanish</option>
+                            </select>
+                        </div>
+                        <button class="action action-primary" type="submit">
+                            Create account
+                        </button>
+                    </form>
+                    <p class="auth-switch">
+                        Already have an account?
+                        <a id="toLogin" href="#login">Log in</a>
+                    </p>
+                </section>
+            </main>
+        </div>
+        <script type="module" src="/src/loginSignup.js"></script>
+        <script type="module" src="/src/publicLayout.js"></script>
+    </body>
+</html>

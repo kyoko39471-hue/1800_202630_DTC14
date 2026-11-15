@@ -11,7 +11,9 @@ export const languages = [
 ];
 
 export function languageLabel(code) {
-    return languages.find(language => language.code === code)?.label || 'English';
+    return (
+        languages.find((language) => language.code === code)?.label || 'English'
+    );
 }
 
 export async function getUserProfile(user) {
@@ -21,13 +23,17 @@ export async function getUserProfile(user) {
 
 // The Auth UID gives each account one profile. Merge preserves teammates' fields.
 export async function saveUserProfile(user, { name, preferredLanguage } = {}) {
-    if (preferredLanguage !== undefined && !languages.some(language => language.code === preferredLanguage)) {
+    if (
+        preferredLanguage !== undefined &&
+        !languages.some((language) => language.code === preferredLanguage)
+    ) {
         throw new Error('Choose one of the available languages.');
     }
     const reference = doc(db, 'users', user.uid);
     const snapshot = await getDoc(reference);
     const existing = snapshot.exists() ? snapshot.data() : {};
-    const savedLanguage = preferredLanguage ?? existing.preferredLanguage ?? 'en';
+    const savedLanguage =
+        preferredLanguage ?? existing.preferredLanguage ?? 'en';
     const profile = {
         uid: user.uid,
         name: name ?? existing.name ?? user.displayName ?? '',

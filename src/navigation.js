@@ -16,11 +16,15 @@ class AppNavigation extends HTMLElement {
             ['phrases', 'phrases.html', 'Phrases'],
             ['help', 'help.html', 'Help'],
         ];
-        this.innerHTML = `<nav class="bottom-nav d-flex" aria-label="Main navigation">${links.map(([key, href, label]) => `
+        this.innerHTML = `<nav class="bottom-nav d-flex" aria-label="Main navigation">${links
+            .map(
+                ([key, href, label]) => `
             <a href="${href}"${active === key ? ' aria-current="page"' : ''}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[key]}</svg>
                 <span>${label}</span>
-            </a>`).join('')}
+            </a>`
+            )
+            .join('')}
         </nav>`;
     }
 }
