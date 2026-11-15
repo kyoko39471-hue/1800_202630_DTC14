@@ -1,5 +1,4 @@
 import { icon, setStatus } from './layout.js';
-import { languageLabel } from './userProfiles.js';
 import { setPhraseSaved } from './phraseStore.js';
 
 function textElement(tag, className, text) {
@@ -12,29 +11,27 @@ export function phraseCard(phrase, language, user, saved, onRemove) {
     const card = document.createElement('article');
     card.className = 'phrase-card';
     const english = document.createElement('div');
-    english.append(
-        textElement('span', 'field-label', 'English'),
-        textElement('p', 'phrase-english', phrase.english)
-    );
+    english.append(textElement('p', 'phrase-english', phrase.english));
     const translation = document.createElement('div');
-    translation.append(
-        textElement('span', 'field-label', languageLabel(language))
+    const translated = textElement(
+        'p',
+        'phrase-translation',
+        phrase.translation
     );
-    const translated = textElement('p', '', phrase.translation);
     translated.lang = language;
     translated.dir = language === 'ur' ? 'rtl' : 'auto';
     translation.append(translated);
     const actions = document.createElement('div');
-    actions.className = 'actions';
+    actions.className = 'phrase-actions';
     const save = document.createElement('button');
     save.type = 'button';
-    save.className = 'action';
+    save.className = 'action save-phrase';
     function updateSave() {
-        save.innerHTML = icon('heart', saved);
+        save.innerHTML = icon(saved ? 'bookmark-check' : 'bookmark');
         save.setAttribute('aria-pressed', String(saved));
         save.setAttribute(
             'aria-label',
-            `${saved ? 'Unlike phrase' : 'Like phrase'}: ${phrase.english}`
+            `${saved ? 'Unsave phrase' : 'Save phrase'}: ${phrase.english}`
         );
     }
     updateSave();
@@ -53,6 +50,9 @@ export function phraseCard(phrase, language, user, saved, onRemove) {
         }
     });
     actions.append(save);
-    card.append(english, translation, actions);
+    const copy = document.createElement('div');
+    copy.className = 'phrase-copy';
+    copy.append(english, translation);
+    card.append(copy, actions);
     return card;
 }

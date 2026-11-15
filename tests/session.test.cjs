@@ -21,6 +21,8 @@ function session(profile, error) {
             return profile;
         },
         setStatus: (...args) => messages.push(args),
+        setHeaderLanguage: () => {},
+        languageLabel: (code) => (code === 'fr' ? 'French' : 'English'),
     });
     const source = fs
         .readFileSync(path.join(__dirname, '../src/session.js'), 'utf8')

@@ -1,6 +1,6 @@
 import { onAuthReady } from './authentication.js';
-import { getUserProfile } from './userProfiles.js';
-import { setStatus } from './layout.js';
+import { getUserProfile, languageLabel } from './userProfiles.js';
+import { setHeaderLanguage, setStatus } from './layout.js';
 
 export function startSignedIn(loadPage) {
     let user = null;
@@ -20,6 +20,7 @@ export function startSignedIn(loadPage) {
                     preferredLanguage: 'en',
                 };
             if (version !== generation) return;
+            setHeaderLanguage(languageLabel(profile.preferredLanguage));
             await loadPage(user, profile, () => version === generation);
         } catch (error) {
             if (version !== generation) return;

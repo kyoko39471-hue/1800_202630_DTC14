@@ -7,19 +7,19 @@
     </head>
     <body>
         <div class="app-page">
-            <header class="app-header home-header">
-                <h1>Hello, <span id="name-goes-here">friend</span></h1>
-                <button id="logoutBtn" class="action logout-btn" type="button">
-                    Log out
-                </button>
-            </header>
+            <header class="app-header" data-app-header></header>
             <main class="app-content">
+                <div class="home-welcome">
+                    <h1>Hello, <span id="name-goes-here">friend</span></h1>
+                    <button
+                        id="logoutBtn"
+                        class="action logout-btn"
+                        type="button"
+                    >
+                        Log out
+                    </button>
+                </div>
                 <div class="heading"><p>Choose a travel category.</p></div>
-                <a class="language-link" href="profile.html"
-                    ><span data-icon="languages"></span
-                    ><span id="languageLabel">Loading your language…</span
-                    ><span data-icon="chevron"></span
-                ></a>
                 <div class="category-grid">
                     <a
                         class="category-card"

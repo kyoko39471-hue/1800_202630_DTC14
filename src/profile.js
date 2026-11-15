@@ -1,6 +1,11 @@
-import { mountLayout, setStatus } from './layout.js';
+import { mountLayout, setHeaderLanguage, setStatus } from './layout.js';
 import { startSignedIn } from './session.js';
-import { languages, getUserProfile, saveUserProfile } from './userProfiles.js';
+import {
+    languages,
+    languageLabel,
+    getUserProfile,
+    saveUserProfile,
+} from './userProfiles.js';
 
 mountLayout('user');
 const selector = document.getElementById('preferredLanguage');
@@ -38,6 +43,7 @@ document
             const profile = await getUserProfile(account);
             if (profile?.preferredLanguage !== value)
                 throw new Error('Preference was not confirmed.');
+            setHeaderLanguage(languageLabel(value));
             setStatus('Language saved and verified.');
         } catch {
             setStatus(

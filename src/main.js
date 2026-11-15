@@ -1,6 +1,5 @@
 import { mountLayout, setStatus } from './layout.js';
 import { startSignedIn } from './session.js';
-import { languageLabel } from './userProfiles.js';
 import { logoutUser } from './authentication.js';
 
 mountLayout('home');
@@ -22,7 +21,5 @@ startSignedIn(async (user, profile) => {
         user.displayName ||
         'friend'
     ).split(' ')[0];
-    document.getElementById('languageLabel').textContent =
-        `Translate to ${languageLabel(profile.preferredLanguage)}`;
     setStatus('');
 });
