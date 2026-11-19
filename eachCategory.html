@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Category | Communication Help</title>
+    </head>
+    <body>
+        <div class="app-page">
+            <header class="app-header" data-app-header></header>
+            <main class="app-content">
+                <a class="back-link" href="main.html"
+                    ><span data-icon="back"></span>Categories</a
+                >
+                <div class="heading">
+                    <h1 id="category-title">Category</h1>
+                    <a id="languageLabel" class="muted" href="profile.html"
+                        >Loading your language…</a
+                    >
+                </div>
+                <button id="addPhraseButton" class="action" type="button">
+                    + Add phrase
+                </button>
+
+                <form id="addPhraseForm" class="add-phrase-form" hidden>
+                    <h2>Add your own phrase</h2>
+
+                    <label for="englishInput">English phrase</label>
+                    <input
+                        id="englishInput"
+                        type="text"
+                        placeholder="Enter an English phrase"
+                        required
+                    />
+
+                    <label for="translationInput">Translation</label>
+                    <input
+                        id="translationInput"
+                        type="text"
+                        placeholder="Enter the translation"
+                        required
+                    />
+
+                    <div class="actions">
+                        <button type="submit" class="action">
+                            Save phrase
+                        </button>
+                        <button
+                            id="cancelButton"
+                            type="button"
+                            class="action cancel-button"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+
+                    <p
+                        id="formMessage"
+                        class="muted"
+                        role="status"
+                    ></p>
+                </form>
+
+                <p
+                    id="pageStatus"
+                    class="page-status"
+                    role="status"
+                    aria-live="polite"
+                >
+                    Loading phrases…
+                </p>
+                <button id="retryButton" class="action" hidden>Retry</button>
+                <div
+                    id="phrases-go-here"
+                    class="phrase-list"
+                    aria-label="Travel phrases"
+                ></div>
+            </main>
+            <nav
+                class="bottom-nav"
+                data-app-nav
+                aria-label="Main navigation"
+            ></nav>
+        </div>
+        <script type="module" src="/src/eachCategory.js"></script>
+    </body>
+</html>

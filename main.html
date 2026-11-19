@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>Home | Communication Help</title>
+    </head>
+    <body>
+        <div class="app-page">
+            <header class="app-header" data-app-header></header>
+            <main class="app-content">
+                <div class="home-welcome">
+                    <h1>Hello, <span id="name-goes-here">friend</span></h1>
+                    <button
+                        id="logoutBtn"
+                        class="action logout-btn"
+                        type="button"
+                    >
+                        Log out
+                    </button>
+                </div>
+                <div class="heading"><p>Choose a travel category.</p></div>
+                <div class="category-grid">
+                    <a
+                        class="category-card"
+                        href="eachCategory.html?category=accommodation"
+                        ><img src="/images/accommodation.jpg" alt="" />
+                        <h2>Accommodation</h2></a
+                    >
+                    <a
+                        class="category-card"
+                        href="eachCategory.html?category=restaurants"
+                        ><img src="/images/restaurants.jpg" alt="" />
+                        <h2>Restaurants</h2></a
+                    >
+                    <a
+                        class="category-card"
+                        href="eachCategory.html?category=greetings"
+                        ><img src="/images/greetings.jpg" alt="" />
+                        <h2>Greetings</h2></a
+                    >
+                    <a
+                        class="category-card"
+                        href="eachCategory.html?category=emergency"
+                        ><img src="/images/emergency.jpg" alt="" />
+                        <h2>Emergency</h2></a
+                    >
+                </div>
+                <p
+                    id="pageStatus"
+                    class="page-status"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+                <button id="retryButton" class="action" hidden>Retry</button>
+            </main>
+            <nav
+                class="bottom-nav"
+                data-app-nav
+                aria-label="Main navigation"
+            ></nav>
+        </div>
+        <script type="module" src="/src/main.js"></script>
+    </body>
+</html>

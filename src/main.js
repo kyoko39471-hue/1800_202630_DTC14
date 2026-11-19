@@ -1,10 +1,25 @@
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap';
+import { mountLayout, setStatus } from './layout.js';
+import { startSignedIn } from './session.js';
+import { logoutUser } from './authentication.js';
 
-// If you have custom global styles, import them as well:
-// import '../styles/style.css';
-
-function sayHello() {
-
-}
-// document.addEventListener('DOMContentLoaded', sayHello);
+mountLayout('home');
+document
+    .getElementById('logoutBtn')
+    .addEventListener('click', async (event) => {
+        const button = event.currentTarget;
+        button.disabled = true;
+        try {
+            await logoutUser();
+        } catch {
+            button.disabled = false;
+            setStatus('Couldn’t log out. Please try again.', true);
+        }
+    });
+startSignedIn(async (user, profile) => {
+    document.getElementById('name-goes-here').textContent = (
+        profile.name ||
+        user.displayName ||
+        'friend'
+    ).split(' ')[0];
+    setStatus('');
+});
