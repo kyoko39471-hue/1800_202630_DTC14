@@ -18,6 +18,49 @@
                         >Loading your language…</a
                     >
                 </div>
+                <button id="addPhraseButton" class="action" type="button">
+                    + Add phrase
+                </button>
+
+                <form id="addPhraseForm" class="add-phrase-form" hidden>
+                    <h2>Add your own phrase</h2>
+
+                    <label for="englishInput">English phrase</label>
+                    <input
+                        id="englishInput"
+                        type="text"
+                        placeholder="Enter an English phrase"
+                        required
+                    />
+
+                    <label for="translationInput">Translation</label>
+                    <input
+                        id="translationInput"
+                        type="text"
+                        placeholder="Enter the translation"
+                        required
+                    />
+
+                    <div class="actions">
+                        <button type="submit" class="action">
+                            Save phrase
+                        </button>
+                        <button
+                            id="cancelButton"
+                            type="button"
+                            class="action cancel-button"
+                        >
+                            Cancel
+                        </button>
+                    </div>
+
+                    <p
+                        id="formMessage"
+                        class="muted"
+                        role="status"
+                    ></p>
+                </form>
+
                 <p
                     id="pageStatus"
                     class="page-status"

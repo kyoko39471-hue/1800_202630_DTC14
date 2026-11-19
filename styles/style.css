@@ -1,5 +1,7 @@
 :root {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+        Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
     color-scheme: light;
     --app-bg: light-dark(#fff, #191b1d);
     --app-ink: light-dark(#202326, #f0f1f2);
@@ -21,6 +23,7 @@ body {
     margin: 0;
     background: var(--app-bg);
     color: var(--app-ink);
+    -webkit-font-smoothing: antialiased;
 }
 button,
 input,
@@ -76,6 +79,7 @@ summary:focus-visible {
     gap: 14px;
     padding: 16px 18px;
     border-bottom: 1px solid var(--app-line);
+    background: var(--app-bg);
 }
 .brand {
     font-size: 20px;
@@ -205,9 +209,17 @@ p {
     padding: 8px;
     text-align: center;
     text-decoration: none;
+    transition:
+        transform 160ms ease,
+        background 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease;
 }
 .category-card:hover {
     background: var(--app-soft);
+    border-color: var(--app-button-line);
+    box-shadow: 0 8px 22px light-dark(rgb(30 43 66 / 8%), rgb(0 0 0 / 18%));
+    transform: translateY(-2px);
 }
 .category-card img {
     display: block;
@@ -299,6 +311,13 @@ p {
     align-items: center;
     background: var(--app-bg);
     min-width: 0;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+.phrase-card:hover {
+    border-color: var(--app-button-line);
+    box-shadow: 0 6px 18px light-dark(rgb(30 43 66 / 6%), rgb(0 0 0 / 16%));
 }
 .phrase-card p {
     overflow-wrap: anywhere;
@@ -359,6 +378,11 @@ p {
     min-height: 44px;
     font-size: 14px;
     text-decoration: none;
+    transition:
+        background 160ms ease,
+        border-color 160ms ease,
+        transform 160ms ease,
+        box-shadow 160ms ease;
 }
 .action[aria-pressed='true'],
 .action-primary,
@@ -371,6 +395,8 @@ p {
 .action.save-phrase[aria-pressed='true']:hover:not(:disabled) {
     background: var(--app-button-hover);
     border-color: var(--app-button-hover);
+    box-shadow: 0 5px 14px light-dark(rgb(23 61 120 / 16%), rgb(0 0 0 / 24%));
+    transform: translateY(-1px);
 }
 .action.save-phrase:not([aria-pressed='true']):hover:not(:disabled) {
     border-color: var(--app-active);
@@ -409,6 +435,14 @@ select {
     background: var(--app-bg);
     color: var(--app-ink);
     font-size: 16px;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease;
+}
+input:focus,
+select:focus {
+    border-color: var(--app-active);
+    box-shadow: 0 0 0 3px light-dark(rgb(49 91 156 / 12%), rgb(170 199 255 / 14%));
 }
 .profile-details {
     margin: 24px 0;
@@ -475,6 +509,13 @@ ol {
     color: var(--app-muted);
 }
 @media (min-width: 760px) {
+    body {
+        background: var(--app-soft);
+    }
+    .app-page {
+        border-inline: 1px solid var(--app-line);
+        box-shadow: 0 12px 40px light-dark(rgb(30 43 66 / 8%), rgb(0 0 0 / 28%));
+    }
     .app-header {
         padding: 20px 36px;
     }
@@ -536,4 +577,46 @@ ol {
     .logout-btn {
         min-height: 44px;
     }
+}
+/* Add Phrase Form */
+
+#addPhraseButton {
+    margin-bottom: 16px;
+}
+
+.add-phrase-form {
+    border: 1px solid var(--app-line);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 20px;
+    background: var(--app-soft);
+}
+
+.add-phrase-form h2 {
+    margin-bottom: 12px;
+}
+
+.add-phrase-form label {
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 6px;
+}
+
+.add-phrase-form input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.add-phrase-form .actions {
+    margin-top: 10px;
+}
+
+.cancel-button {
+    background: var(--app-soft);
+    color: var(--app-ink);
+    border-color: var(--app-line);
+}
+
+#formMessage {
+    margin-top: 12px;
 }
