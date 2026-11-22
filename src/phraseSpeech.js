@@ -12,8 +12,23 @@ export function stopPhraseSpeech(button) {
     if (!playback || (button && playback.button !== button)) return;
     const active = playback;
     playback = null;
+    active.stop();
     active.finish('');
-    speech.cancel();
+}
+
+// Clips recorded by scripts/generateAudio.js sound the same on every device.
+export function recordingUrl(phrase, language) {
+    return `/audio/${language}/${phrase.categoryId}_${phrase.phraseId}.mp3`;
+}
+
+// Most desktops ship no on-device Punjabi or Urdu voice, so fall back to the
+// browser's online voices. On-device voices still win because they work offline.
+function voiceFor(language) {
+    const matches = speech.getVoices().filter(
+        (candidate) =>
+            candidate.lang.toLowerCase().split(/[-_]/)[0] === language
+    );
+    return matches.find((candidate) => candidate.localService) || matches[0];
 }
 
 export function phraseSpeechButton(phrase, language, status) {
@@ -35,24 +50,9 @@ export function phraseSpeechButton(phrase, language, status) {
         stopPhraseSpeech();
         if (wasPlaying) return;
 
-        if (!speech || typeof globalThis.SpeechSynthesisUtterance !== 'function') {
-            status.textContent = 'Audio is unavailable in this browser.';
-            return;
-        }
-        const voice = speech.getVoices().find((candidate) =>
-            candidate.localService &&
-            candidate.lang.toLowerCase().split(/[-_]/)[0] === language
-        );
-        if (!voice) {
-            status.textContent = `No local ${languageLabel(language)} voice is available.`;
-            return;
-        }
-
-        const utterance = new SpeechSynthesisUtterance(phrase.translation);
-        utterance.lang = voice.lang;
-        utterance.voice = voice;
         const active = {
             button,
+            stop() {},
             finish(message) {
                 setPlaying(false);
                 status.textContent = message;
@@ -63,19 +63,56 @@ export function phraseSpeechButton(phrase, language, status) {
             playback = null;
             active.finish(message);
         }
-        utterance.onstart = () => {
+        function started() {
             if (playback === active) status.textContent = 'Playing…';
-        };
-        utterance.onend = () => finish('Playback finished.');
-        utterance.onerror = () => finish('Playback unavailable. Try again.');
+        }
+
+        function speakWithBrowserVoice() {
+            if (playback !== active) return;
+            if (!speech || typeof globalThis.SpeechSynthesisUtterance !== 'function') {
+                finish('Audio is unavailable in this browser.');
+                return;
+            }
+            const voice = voiceFor(language);
+            if (!voice) {
+                finish(`No ${languageLabel(language)} voice is available in this browser.`);
+                return;
+            }
+            const utterance = new SpeechSynthesisUtterance(phrase.translation);
+            utterance.lang = voice.lang;
+            utterance.voice = voice;
+            utterance.onstart = started;
+            utterance.onend = () => finish('Playback finished.');
+            utterance.onerror = () => finish('Playback unavailable. Try again.');
+            active.stop = () => speech.cancel();
+            try {
+                speech.speak(utterance);
+            } catch {
+                finish('Playback unavailable. Try again.');
+            }
+        }
+
         playback = active;
         setPlaying(true);
         status.textContent = 'Starting playback…';
-        try {
-            speech.speak(utterance);
-        } catch {
-            finish('Playback unavailable. Try again.');
+        if (typeof globalThis.Audio !== 'function') {
+            speakWithBrowserVoice();
+            return;
         }
+        // A missing clip fires both the error event and a rejected play(); fall back once.
+        const audio = new Audio(recordingUrl(phrase, language));
+        let fellBack = false;
+        function fallBack() {
+            if (fellBack) return;
+            fellBack = true;
+            audio.pause();
+            speakWithBrowserVoice();
+        }
+        active.stop = () => audio.pause();
+        audio.onplaying = started;
+        audio.onended = () => finish('Playback finished.');
+        audio.onerror = fallBack;
+        audio.play().catch(fallBack);
     });
     return button;
 }

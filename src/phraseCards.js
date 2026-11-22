@@ -19,8 +19,9 @@ export function phraseCard(phrase, language, user, saved, onRemove) {
         'phrase-translation',
         phrase.translation
     );
-    translated.lang = language;
-    translated.dir = language === 'ur' ? 'rtl' : 'auto';
+    // The "unavailable" notice is English, so it must not take Urdu's right-to-left layout.
+    translated.lang = phrase.available ? language : 'en';
+    translated.dir = phrase.available && language === 'ur' ? 'rtl' : 'auto';
     translation.append(translated);
     const actions = document.createElement('div');
     actions.className = 'phrase-actions';
