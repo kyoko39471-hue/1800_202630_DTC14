@@ -11,6 +11,10 @@ const paths = {
     heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"/>',
     user: '<circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/>',
     back: '<path d="m10 5-7 7 7 7M3 12h18"/>',
+    search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/>',
+    speaker: '<path d="M11 5 6 9H3v6h3l5 4zM15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/>',
+    stop: '<rect x="6" y="6" width="12" height="12" rx="2"/>',
+    'chevron-down': '<path d="m6 9 6 6 6-6"/>',
     languages:
         '<path d="M3 5h11M8 3v2M5 5c1 6 5 9 9 10M12 5c-1 6-5 9-9 10M14 21l4-10 4 10M16 17h4"/>',
     chevron: '<path d="m9 5 7 7-7 7"/>',
@@ -21,7 +25,7 @@ export function icon(name, filled = false) {
 export function mountLayout(active) {
     const header = document.querySelector('[data-app-header]');
     if (header)
-        header.innerHTML = `<div class="header-copy"><a class="brand" href="${active ? 'main.html' : 'index.html'}">Communication Help</a>${active ? `<a class="header-language" href="profile.html">${icon('languages')}<span id="headerLanguageLabel">Loading your language…</span></a>` : ''}</div><button class="action theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false"><span class="theme-moon">${icon('moon')}</span><span class="theme-sun">${icon('sun')}</span></button>`;
+        header.innerHTML = `<div class="header-copy"><a class="brand" href="${active ? 'main.html' : 'index.html'}">Communication Help</a><p class="header-language">${icon('languages')}<span id="headerLanguageLabel">${active ? 'Loading your language…' : 'Translating from English to English'}</span></p></div><button class="action theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false"><span class="theme-moon">${icon('moon')}</span><span class="theme-sun">${icon('sun')}</span></button>`;
     const nav = document.querySelector('[data-app-nav]');
     if (nav)
         nav.innerHTML = [
@@ -37,6 +41,33 @@ export function mountLayout(active) {
     document
         .querySelectorAll('[data-icon]')
         .forEach((element) => (element.innerHTML = icon(element.dataset.icon)));
+    const back = document.querySelector('[data-app-back]');
+    if (back && document.referrer && history.length > 1) {
+        const previous = new URL(document.referrer);
+        const appPages = [
+            'main.html',
+            'eachCategory.html',
+            'savedphrases.html',
+            'profile.html',
+        ];
+        const fromApp = appPages.some(
+            (page) => new URL(page, location.href).pathname === previous.pathname
+        );
+        if (
+            fromApp &&
+            previous.origin === location.origin &&
+            previous.href !== location.href
+        ) {
+            back.addEventListener('click', (event) => {
+                if (
+                    event.button || event.metaKey || event.ctrlKey ||
+                    event.shiftKey || event.altKey
+                ) return;
+                event.preventDefault();
+                history.back();
+            });
+        }
+    }
     initTheme();
     document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
         button.addEventListener('click', toggleTheme);
@@ -49,7 +80,7 @@ export function mountLayout(active) {
 }
 export function setHeaderLanguage(label) {
     const element = document.getElementById('headerLanguageLabel');
-    if (element) element.textContent = `Translating to ${label}`;
+    if (element) element.textContent = `Translating from English to ${label}`;
 }
 export function setStatus(message, error = false) {
     const element = document.getElementById('pageStatus');

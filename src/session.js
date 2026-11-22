@@ -34,6 +34,9 @@ export function startSignedIn(loadPage) {
         }
     }
     retry.addEventListener('click', load);
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) load();
+    });
     onAuthReady((account) => {
         user = account;
         if (!user) {

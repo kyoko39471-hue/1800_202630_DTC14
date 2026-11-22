@@ -10,7 +10,52 @@ import {
 mountLayout('user');
 const selector = document.getElementById('preferredLanguage');
 const save = document.getElementById('saveLanguage');
+const name = document.getElementById('profileName');
+const edit = document.getElementById('editProfile');
+const editor = document.getElementById('profileEditor');
+const nameInput = document.getElementById('displayName');
+const saveProfile = document.getElementById('saveProfile');
+const cancel = document.getElementById('cancelEdit');
 let account = null;
+let displayName = '';
+
+function disableControls(disabled) {
+    for (const control of [selector, save, edit, nameInput, saveProfile, cancel]) {
+        control.disabled = disabled;
+    }
+}
+
+function setEditing(editing) {
+    editor.hidden = !editing;
+    edit.setAttribute('aria-expanded', String(editing));
+    if (editing) {
+        nameInput.value = displayName;
+        nameInput.setCustomValidity('');
+        nameInput.focus();
+    } else {
+        edit.focus();
+    }
+}
+
+async function saveAndVerify(field, value, saving, failure) {
+    const user = account;
+    disableControls(true);
+    setStatus(saving);
+    try {
+        await saveUserProfile(user, { [field]: value });
+        const profile = await getUserProfile(user);
+        if (profile?.[field] !== value) {
+            throw new Error('Change was not confirmed.');
+        }
+        return true;
+    } catch {
+        setStatus(failure, true);
+        return false;
+    } finally {
+        disableControls(false);
+    }
+}
+
 for (const language of languages) {
     const option = document.createElement('option');
     option.value = language.code;
@@ -21,37 +66,47 @@ for (const language of languages) {
 }
 startSignedIn(async (user, profile) => {
     account = user;
-    document.getElementById('profileName').textContent =
-        profile.name || user.displayName || '—';
+    displayName = profile.name || user.displayName || '';
+    name.textContent = displayName || '—';
     document.getElementById('profileEmail').textContent = user.email || '—';
     selector.value = profile.preferredLanguage || 'en';
-    selector.disabled = false;
-    save.disabled = false;
+    disableControls(false);
     setStatus('');
 });
 document
     .getElementById('profileForm')
     .addEventListener('submit', async (event) => {
         event.preventDefault();
-        if (!account) return;
+        if (!account || save.disabled) return;
         const value = selector.value;
-        save.disabled = true;
-        selector.disabled = true;
-        setStatus('Saving language…');
-        try {
-            await saveUserProfile(account, { preferredLanguage: value });
-            const profile = await getUserProfile(account);
-            if (profile?.preferredLanguage !== value)
-                throw new Error('Preference was not confirmed.');
-            setHeaderLanguage(languageLabel(value));
-            setStatus('Language saved and verified.');
-        } catch {
-            setStatus(
-                'Couldn’t confirm the language change. Please try again.',
-                true
-            );
-        } finally {
-            save.disabled = false;
-            selector.disabled = false;
-        }
+        const saved = await saveAndVerify(
+            'preferredLanguage', value, 'Saving language…',
+            'Couldn’t confirm the language change. Please try again.'
+        );
+        if (!saved) return;
+        setHeaderLanguage(languageLabel(value));
+        setStatus('Language saved and verified.');
     });
+
+edit.addEventListener('click', () => setEditing(editor.hidden));
+cancel.addEventListener('click', () => setEditing(false));
+nameInput.addEventListener('input', () => nameInput.setCustomValidity(''));
+editor.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!account || saveProfile.disabled) return;
+    const value = nameInput.value.trim();
+    if (!value) {
+        nameInput.setCustomValidity('Enter a display name.');
+        nameInput.reportValidity();
+        return;
+    }
+    const saved = await saveAndVerify(
+        'name', value, 'Saving profile…',
+        'Couldn’t confirm the profile change. Please try again.'
+    );
+    if (!saved) return;
+    displayName = value;
+    name.textContent = value;
+    setStatus('Profile updated.');
+    setEditing(false);
+});

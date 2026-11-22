@@ -93,10 +93,8 @@ summary:focus-visible {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    min-height: 32px;
     color: var(--app-muted);
     font-size: 13px;
-    text-decoration: none;
 }
 .header-language .icon {
     width: 18px;
@@ -277,14 +275,49 @@ p {
     color: var(--app-error);
 }
 .back-link {
+    position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    min-height: 44px;
-    margin-bottom: 13px;
-    font-size: 14px;
-    color: var(--app-muted);
+    gap: 5px;
+    min-height: 34px;
+    padding: 0 11px;
+    margin-bottom: 12px;
+    border: 1px solid var(--app-button-line);
+    border-radius: 999px;
+    background: var(--app-button-soft);
+    color: var(--app-button-ink);
+    font-size: 13px;
+    font-weight: 600;
     text-decoration: none;
+}
+.back-link .icon {
+    width: 15px;
+    height: 15px;
+}
+.phrase-search {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 9px;
+}
+.phrase-search-field,
+.profile-language-select {
+    position: relative;
+}
+.phrase-search-field input {
+    padding-inline-end: 36px;
+}
+.phrase-search-field [data-icon],
+.profile-language-select [data-icon] {
+    position: absolute;
+    inset-inline-end: 10px;
+    top: 50%;
+    display: flex;
+    transform: translateY(-50%);
+    color: var(--app-muted);
+    pointer-events: none;
+}
+.phrase-search #phraseResults {
+    font-size: 13px;
 }
 .phrase-list {
     display: grid;
@@ -295,7 +328,7 @@ p {
     border-radius: 14px;
     padding: 14px;
     display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(62px, 3fr);
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     background: var(--app-bg);
     min-width: 0;
@@ -314,15 +347,24 @@ p {
 .phrase-translation {
     color: var(--app-muted);
 }
+.phrase-card .phrase-pronunciation,
+.phrase-card .phrase-audio-status {
+    color: var(--app-muted);
+    font-size: 12px;
+}
+.phrase-audio-status:empty {
+    display: none;
+}
 .phrase-actions {
     align-self: stretch;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
     padding-left: 8px;
     border-left: 1px solid var(--app-line);
 }
-.action.save-phrase {
+.action.phrase-icon-button {
     width: 44px;
     min-width: 44px;
     height: 44px;
@@ -362,18 +404,24 @@ p {
 }
 .action[aria-pressed='true'],
 .action-primary,
-.action.save-phrase[aria-pressed='true'] {
+.action.phrase-icon-button[aria-pressed='true'] {
     background: var(--app-active);
     color: var(--app-active-ink);
     border-color: var(--app-active);
 }
-.action:not(.theme-toggle):not(.save-phrase):hover:not(:disabled),
-.action.save-phrase[aria-pressed='true']:hover:not(:disabled) {
+.action:not(.theme-toggle):not(.phrase-icon-button):not(.action-secondary):hover:not(:disabled),
+.action.phrase-icon-button[aria-pressed='true']:hover:not(:disabled) {
     background: var(--app-button-hover);
     border-color: var(--app-button-hover);
 }
-.action.save-phrase:not([aria-pressed='true']):hover:not(:disabled) {
+.action.phrase-icon-button:not([aria-pressed='true']):hover:not(:disabled),
+.action-secondary:hover:not(:disabled) {
     border-color: var(--app-active);
+}
+.action.action-secondary {
+    background: var(--app-button-soft);
+    color: var(--app-button-ink);
+    border-color: var(--app-button-line);
 }
 .empty-state {
     display: grid;
@@ -410,8 +458,39 @@ select {
     color: var(--app-ink);
     font-size: 16px;
 }
+.profile-language {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px 8px;
+    margin-top: 16px;
+}
+.profile-language label {
+    grid-column: 1 / -1;
+}
+.profile-language-select select {
+    appearance: none;
+    padding-inline: 9px 27px;
+}
+.profile-language-select .icon {
+    width: 14px;
+    height: 14px;
+}
+.profile-language button {
+    padding-inline: 6px;
+}
+.profile-edit {
+    margin-top: 8px;
+    width: 100%;
+}
+.profile-editor {
+    display: grid;
+    gap: 8px;
+    margin-top: 16px;
+}
 .profile-details {
     margin: 24px 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--app-line);
     font-size: 14px;
 }
 .theme-setting {
@@ -516,6 +595,16 @@ ol {
     .auth-content {
         padding: 26px 16px;
     }
+    .profile-language {
+        grid-template-columns: minmax(150px, 1fr) minmax(0, 1fr);
+    }
+    .profile-language-select select {
+        padding-inline: 6px 24px;
+    }
+    .profile-language-select .icon {
+        width: 12px;
+        height: 12px;
+    }
 }
 .language-link [data-icon] {
     flex: 0;
@@ -532,8 +621,12 @@ ol {
     font-size: 13px;
 }
 @media (pointer: coarse) {
-    .header-language,
     .logout-btn {
         min-height: 44px;
+    }
+    .back-link::after {
+        content: '';
+        position: absolute;
+        inset: -5px 0;
     }
 }

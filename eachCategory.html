@@ -9,14 +9,11 @@
         <div class="app-page">
             <header class="app-header" data-app-header></header>
             <main class="app-content">
-                <a class="back-link" href="main.html"
-                    ><span data-icon="back"></span>Categories</a
+                <a class="back-link" href="main.html" data-app-back
+                    ><span data-icon="back"></span>Back</a
                 >
                 <div class="heading">
                     <h1 id="category-title">Category</h1>
-                    <a id="languageLabel" class="muted" href="profile.html"
-                        >Loading your language…</a
-                    >
                 </div>
                 <p
                     id="pageStatus"
@@ -27,6 +24,19 @@
                     Loading phrases…
                 </p>
                 <button id="retryButton" class="action" hidden>Retry</button>
+                <div id="phraseSearch" class="phrase-search" hidden>
+                    <label for="searchPhrases">Search phrases</label>
+                    <div class="phrase-search-field">
+                        <input
+                            id="searchPhrases"
+                            type="search"
+                            placeholder="e.g. menu or bill"
+                            autocomplete="off"
+                        />
+                        <span data-icon="search" aria-hidden="true"></span>
+                    </div>
+                    <p id="phraseResults" class="muted" role="status"></p>
+                </div>
                 <div
                     id="phrases-go-here"
                     class="phrase-list"

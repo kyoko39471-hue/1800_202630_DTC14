@@ -75,6 +75,19 @@ test('an explicitly changed login language updates the saved preference', async 
     await api.saveUserProfile(user, { preferredLanguage: 'es' });
     assert.equal(api.writes[0][1].preferredLanguage, 'es');
 });
+test('a name-only edit leaves the existing language and bookmarks out of the write', async () => {
+    const api = profiles({
+        name: 'Previous name',
+        preferredLanguage: 'pa',
+        savedPhrases: ['greetings_phrase_001'],
+    });
+    const result = await api.saveUserProfile(user, { name: 'Updated name' });
+    const [, changes] = api.writes[0];
+    assert.equal(changes.name, 'Updated name');
+    assert.equal('preferredLanguage' in changes, false);
+    assert.equal('savedPhrases' in changes, false);
+    assert.equal(result.preferredLanguage, 'pa');
+});
 test('an older Auth account gets an English profile on next login', async () => {
     const api = profiles(null);
     await api.saveUserProfile(user);
