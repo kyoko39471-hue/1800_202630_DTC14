@@ -4,8 +4,10 @@ import { categories } from './travelPhrasesData.js';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 export async function seedTravelPhrases() {
+    // Each document is checked one at a time, so this takes a while. Reloading stops it part-way.
+    console.log('Writing phrases to Firestore. Keep this page open until it says it is done…');
     try {
-        for (const category of categories) {
+        for (const [index, category] of categories.entries()) {
             // Category document
             const categoryRef = doc(db, 'categories', category.id);
             const categorySnap = await getDoc(categoryRef);
@@ -85,6 +87,7 @@ export async function seedTravelPhrases() {
                     }
                 }
             }
+            console.log(`  ${category.name} done (${index + 1} of ${categories.length})`);
         }
 
         console.log('Travel phrases synchronized with Firestore!');

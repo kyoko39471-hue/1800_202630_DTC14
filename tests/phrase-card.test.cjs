@@ -90,3 +90,30 @@ test('failed unsave keeps the existing saved state and card available for retry'
     assert.equal(removed, false);
     assert.equal(api.statuses.at(-1)[1], true);
 });
+
+test('an Urdu translation reads right to left', () => {
+    const card = harness().makeCard(
+        { ...phrase, translation: 'شکریہ۔' },
+        'ur',
+        user,
+        false
+    );
+    const translated = card.children[0].children[1].children[0];
+    assert.equal(translated.lang, 'ur');
+    assert.equal(translated.dir, 'rtl');
+});
+test('a missing Urdu translation shows its English notice left to right', () => {
+    const card = harness().makeCard(
+        {
+            ...phrase,
+            translation: 'Translation unavailable for this language.',
+            available: false,
+        },
+        'ur',
+        user,
+        false
+    );
+    const translated = card.children[0].children[1].children[0];
+    assert.equal(translated.lang, 'en');
+    assert.notEqual(translated.dir, 'rtl');
+});

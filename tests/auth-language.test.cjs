@@ -237,3 +237,17 @@ test('opening sign-up after choosing a login language carries that choice over',
     form.element('toSignup').handlers.click({ preventDefault() {} });
     assert.equal(form.element('signupLanguage').value, 'zh');
 });
+test('login and sign-up list each destination language with its native name', () => {
+    const expected = Array.from(profiles(null).languages)
+        .filter((language) => language.code !== 'en')
+        .map((language) => `${language.code}: ${language.label} (${language.native})`);
+    const html = fs.readFileSync(path.join(__dirname, '..', 'login.html'), 'utf8');
+    for (const id of ['loginLanguage', 'signupLanguage']) {
+        const select = html.match(new RegExp(`id="${id}"[\\s\\S]*?</select>`))[0];
+        const options = Array.from(
+            select.matchAll(/<option value="(\w+)"[^>]*>([^<]+)<\/option>/g),
+            ([, code, text]) => `${code}: ${text.trim()}`
+        );
+        assert.deepEqual(options, expected, id);
+    }
+});
