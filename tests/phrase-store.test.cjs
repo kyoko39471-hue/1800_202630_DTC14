@@ -10,25 +10,17 @@ function store({ translation = 'Bonjour', missing = false } = {}) {
         db: {},
         doc: (_db, ...parts) => parts.join('/'),
         collection: (_db, ...parts) => parts.join('/'),
-        serverTimestamp: () => 'SERVER_TIME',
-        setDoc: async (...args) => writes.push(['save', ...args]),
-        deleteDoc: async (...args) => writes.push(['remove', ...args]),
-        getDoc: async () => ({
+        arrayUnion: (key) => ({ add: key }),
+        arrayRemove: (key) => ({ remove: key }),
+        updateDoc: async (...args) => writes.push(args),
+        getDoc: async (reference) => ({
             exists: () => !missing,
-            data: () => ({ text: translation }),
+            data: () => reference.startsWith('users/')
+                ? { savedPhrases: ['greetings_phrase_001'] }
+                : { text: translation },
         }),
-        getDocs: async (reference) => ({
-            docs: reference.startsWith('users/')
-                ? [
-                      {
-                          id: 'greetings_phrase_001',
-                          data: () => ({
-                              categoryId: 'greetings',
-                              phraseId: 'phrase_001',
-                          }),
-                      },
-                  ]
-                : [{ id: 'phrase_001', data: () => ({ english: 'Hello' }) }],
+        getDocs: async () => ({
+            docs: [{ id: 'phrase_001', data: () => ({ english: 'Hello' }) }],
         }),
     });
     const source = fs
@@ -57,10 +49,10 @@ test('saving uses the signed-in UID and preserves the shared category record', a
         true
     );
     assert.equal(
-        api.writes[0][1],
-        'users/account-a/savedPhrases/greetings_phrase_001'
+        api.writes[0][0],
+        'users/account-a'
     );
-    assert.equal(api.writes[0][2].createdAt, 'SERVER_TIME');
+    assert.equal(api.writes[0][1].savedPhrases.add, 'greetings_phrase_001');
 });
 test('removal only targets this user’s bookmark', async () => {
     const api = store();
@@ -69,10 +61,8 @@ test('removal only targets this user’s bookmark', async () => {
         { categoryId: 'greetings', phraseId: 'phrase_001' },
         false
     );
-    assert.deepEqual(api.writes[0], [
-        'remove',
-        'users/account-b/savedPhrases/greetings_phrase_001',
-    ]);
+    assert.equal(api.writes[0][0], 'users/account-b');
+    assert.equal(api.writes[0][1].savedPhrases.remove, 'greetings_phrase_001');
 });
 test('unauthenticated saves and invalid phrase references never write', async () => {
     const api = store();

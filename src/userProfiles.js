@@ -32,15 +32,18 @@ export async function saveUserProfile(user, { name, preferredLanguage } = {}) {
     const reference = doc(db, 'users', user.uid);
     const snapshot = await getDoc(reference);
     const existing = snapshot.exists() ? snapshot.data() : {};
-    const savedLanguage =
-        preferredLanguage ?? existing.preferredLanguage ?? 'en';
     const profile = {
         uid: user.uid,
-        name: name ?? existing.name ?? user.displayName ?? '',
         email: user.email,
-        preferredLanguage: savedLanguage,
         updatedAt: serverTimestamp(),
     };
+    // A settings change should not overwrite a different field saved in another tab.
+    if (name !== undefined || existing.name == null) {
+        profile.name = name ?? user.displayName ?? '';
+    }
+    if (preferredLanguage !== undefined || existing.preferredLanguage == null) {
+        profile.preferredLanguage = preferredLanguage ?? 'en';
+    }
     if (!snapshot.exists()) {
         profile.createdAt = serverTimestamp();
         profile.savedPhrases = [];

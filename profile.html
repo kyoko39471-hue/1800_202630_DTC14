@@ -9,6 +9,9 @@
         <div class="app-page">
             <header class="app-header" data-app-header></header>
             <main class="app-content profile-content">
+                <a class="back-link" href="main.html" data-app-back
+                    ><span data-icon="back"></span>Back</a
+                >
                 <div class="heading">
                     <h1>My profile</h1>
                     <p>Your language and account.</p>
@@ -30,19 +33,32 @@
                     <span class="field-label">Email</span>
                     <p id="profileEmail">—</p>
                 </div>
-                <form id="profileForm">
-                    <div class="profile-field">
-                        <label for="preferredLanguage"
-                            >Translate phrases to</label
-                        ><select id="preferredLanguage" disabled></select
-                        ><button
-                            class="action action-primary"
-                            id="saveLanguage"
-                            type="submit"
-                            disabled
-                        >
-                            Save language
-                        </button>
+                <form id="profileForm" class="profile-language">
+                    <label for="preferredLanguage">Translate phrases to</label>
+                    <div class="profile-language-select">
+                        <select id="preferredLanguage" disabled></select>
+                        <span data-icon="chevron-down" aria-hidden="true"></span>
+                    </div>
+                    <button class="action action-primary" id="saveLanguage" type="submit" disabled>
+                        Save language
+                    </button>
+                </form>
+                <button
+                    class="action action-secondary profile-edit"
+                    id="editProfile"
+                    type="button"
+                    aria-controls="profileEditor"
+                    aria-expanded="false"
+                    disabled
+                >
+                    Edit profile
+                </button>
+                <form id="profileEditor" class="profile-editor" hidden>
+                    <label for="displayName">Display name</label>
+                    <input id="displayName" name="displayName" autocomplete="name" maxlength="40" required />
+                    <div class="actions">
+                        <button class="action action-primary" id="saveProfile" type="submit">Save changes</button>
+                        <button class="action action-secondary" id="cancelEdit" type="button">Cancel</button>
                     </div>
                 </form>
                 <details class="profile-details">

@@ -12,6 +12,7 @@ function session(profile, error) {
     const retry = { hidden: true, addEventListener: () => {} };
     const context = vm.createContext({
         document: { getElementById: () => retry },
+        window: { addEventListener: () => {} },
         location: { replace: (url) => redirects.push(url) },
         onAuthReady: (callback) => {
             authCallback = callback;

@@ -38,7 +38,8 @@ async function withTranslation(phrase, language) {
             language
         )
     );
-    const text = translation.exists() ? translation.data().text : null;
+    const data = translation.exists() ? translation.data() : {};
+    const { text, pronunciation } = data;
     return {
         ...phrase,
         translation:
@@ -46,6 +47,7 @@ async function withTranslation(phrase, language) {
                 ? text
                 : 'Translation unavailable for this language.',
         available: typeof text === 'string' && !!text,
+        pronunciation: typeof pronunciation === 'string' ? pronunciation : '',
     };
 }
 export async function readCategory(categoryId, language) {

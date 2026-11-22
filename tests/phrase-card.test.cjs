@@ -28,6 +28,8 @@ function harness(fail = false) {
     const context = vm.createContext({
         document: { createElement: element },
         icon: (name) => name,
+        phraseSpeechButton: () => element('button'),
+        stopPhraseSpeech: () => {},
         setStatus: (...args) => statuses.push(args),
         setPhraseSaved: async (...args) => {
             if (fail) throw new Error('Denied');
@@ -46,13 +48,14 @@ const phrase = {
     phraseId: 'hello',
     english: 'Hello!',
     translation: 'Bonjour !',
+    available: true,
 };
 const user = { uid: 'account-a' };
 
 test('bookmark saves the same user-specific phrase and updates its accessible state', async () => {
     const api = harness();
     const card = api.makeCard(phrase, 'fr', user, false);
-    const button = card.children[1].children[0];
+    const button = card.children[1].children[1];
     assert.equal(button.innerHTML, 'bookmark');
     await button.handlers.click();
     assert.deepEqual(api.writes[0], [user, phrase, true]);
@@ -71,7 +74,7 @@ test('successful unsave removes the card from Saved after the write finishes', a
         true,
         (value) => (removed = value)
     );
-    await card.children[1].children[0].handlers.click();
+    await card.children[1].children[1].handlers.click();
     assert.equal(api.writes[0][2], false);
     assert.equal(removed, card);
 });
@@ -80,7 +83,7 @@ test('failed unsave keeps the existing saved state and card available for retry'
     const api = harness(true);
     let removed = false;
     const card = api.makeCard(phrase, 'fr', user, true, () => (removed = true));
-    const button = card.children[1].children[0];
+    const button = card.children[1].children[1];
     await button.handlers.click();
     assert.equal(button.attributes['aria-pressed'], 'true');
     assert.equal(button.disabled, false);

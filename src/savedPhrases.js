@@ -1,8 +1,8 @@
 import { mountLayout, setStatus } from './layout.js';
 import { startSignedIn } from './session.js';
-import { languageLabel } from './userProfiles.js';
 import { readSaved, readSavedPhrase } from './phraseStore.js';
 import { phraseCard } from './phraseCards.js';
+import { stopPhraseSpeech } from './phraseSpeech.js';
 
 mountLayout('bookmark');
 startSignedIn(async (user, profile, isCurrent) => {
@@ -17,14 +17,16 @@ startSignedIn(async (user, profile, isCurrent) => {
         const count = container.children.length;
         document.getElementById('emptyState').hidden = count > 0;
         document.getElementById('languageLabel').textContent = count
-            ? `${count} saved · English → ${languageLabel(language)}`
+            ? `${count} saved`
             : 'Keep useful phrases close at hand.';
     }
+    stopPhraseSpeech();
     container.replaceChildren(
         ...phrases.map((p) =>
             phraseCard(p, language, user, true, (card) => {
                 card.remove();
                 updateEmpty();
+                document.querySelector('[data-app-back]').focus();
             })
         )
     );

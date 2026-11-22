@@ -1,5 +1,6 @@
 import { icon, setStatus } from './layout.js';
 import { setPhraseSaved } from './phraseStore.js';
+import { phraseSpeechButton, stopPhraseSpeech } from './phraseSpeech.js';
 
 function textElement(tag, className, text) {
     const element = document.createElement(tag);
@@ -25,7 +26,12 @@ export function phraseCard(phrase, language, user, saved, onRemove) {
     actions.className = 'phrase-actions';
     const save = document.createElement('button');
     save.type = 'button';
-    save.className = 'action save-phrase';
+    save.className = 'action phrase-icon-button save-phrase';
+    const audioStatus = textElement('p', 'phrase-audio-status', '');
+    audioStatus.setAttribute('role', 'status');
+    const listen = phrase.available && phrase.translation
+        ? phraseSpeechButton(phrase, language, audioStatus)
+        : null;
     function updateSave() {
         save.innerHTML = icon(saved ? 'bookmark-check' : 'bookmark');
         save.setAttribute('aria-pressed', String(saved));
@@ -42,17 +48,26 @@ export function phraseCard(phrase, language, user, saved, onRemove) {
             saved = !saved;
             updateSave();
             setStatus('');
-            if (!saved && onRemove) onRemove(card);
+            if (!saved && onRemove) {
+                if (listen) stopPhraseSpeech(listen);
+                onRemove(card);
+            }
         } catch {
             setStatus('Couldn’t save your change. Please try again.', true);
         } finally {
             save.disabled = false;
         }
     });
+    if (listen) actions.append(listen);
     actions.append(save);
     const copy = document.createElement('div');
     copy.className = 'phrase-copy';
-    copy.append(english, translation);
+    copy.append(english);
+    if (language !== 'en' && phrase.translation) copy.append(translation);
+    if (phrase.pronunciation && phrase.available) {
+        copy.append(textElement('p', 'phrase-pronunciation', `Pronunciation · ${phrase.pronunciation}`));
+    }
+    if (listen) copy.append(audioStatus);
     card.append(copy, actions);
     return card;
 }
