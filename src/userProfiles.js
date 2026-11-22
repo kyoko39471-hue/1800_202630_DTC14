@@ -5,7 +5,7 @@ export const languages = [
     { code: 'en', label: 'English', native: 'English' },
     { code: 'fr', label: 'French', native: 'Français' },
     { code: 'pa', label: 'Punjabi', native: 'ਪੰਜਾਬੀ' },
-    { code: 'zh', label: 'Mandarin', native: '中文' },
+    { code: 'zh', label: 'Mandarin', native: '中文普通话' },
     { code: 'ur', label: 'Urdu', native: 'اردو' },
     { code: 'es', label: 'Spanish', native: 'Español' },
 ];
