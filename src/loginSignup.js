@@ -56,7 +56,8 @@ function initAuthUI() {
 
     document.getElementById('toSignup').addEventListener('click', (event) => {
         event.preventDefault();
-        signupLanguage.value = loginLanguage.value;
+        // The untouched login choice means "keep saved language"; sign-up keeps its French default.
+        if (loginLanguageChanged) signupLanguage.value = loginLanguage.value;
         showView(true);
     });
     document.getElementById('toLogin').addEventListener('click', (event) => {

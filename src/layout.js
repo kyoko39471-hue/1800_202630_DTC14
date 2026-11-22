@@ -24,8 +24,12 @@ export function icon(name, filled = false) {
 }
 export function mountLayout(active) {
     const header = document.querySelector('[data-app-header]');
+    // Signed-out pages have no destination language. Signed-in pages reveal it once loaded.
+    const languageLine = active
+        ? `<p class="header-language" hidden>${icon('languages')}<span id="headerLanguageLabel"></span></p>`
+        : '';
     if (header)
-        header.innerHTML = `<div class="header-copy"><a class="brand" href="${active ? 'main.html' : 'index.html'}">Communication Help</a><p class="header-language">${icon('languages')}<span id="headerLanguageLabel">${active ? 'Loading your language…' : 'Translating from English to English'}</span></p></div><button class="action theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false"><span class="theme-moon">${icon('moon')}</span><span class="theme-sun">${icon('sun')}</span></button>`;
+        header.innerHTML = `<div class="header-copy"><a class="brand" href="${active ? 'main.html' : 'index.html'}">Communication Help</a>${languageLine}</div><button class="action theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false"><span class="theme-moon">${icon('moon')}</span><span class="theme-sun">${icon('sun')}</span></button>`;
     const nav = document.querySelector('[data-app-nav]');
     if (nav)
         nav.innerHTML = [
@@ -80,7 +84,11 @@ export function mountLayout(active) {
 }
 export function setHeaderLanguage(label) {
     const element = document.getElementById('headerLanguageLabel');
-    if (element) element.textContent = `Translating from English to ${label}`;
+    if (!element) return;
+    // Phrases start in English, so an English destination has nothing to announce.
+    const translating = Boolean(label) && label !== 'English';
+    element.textContent = translating ? `Translating from English to ${label}` : '';
+    element.closest('.header-language').hidden = !translating;
 }
 export function setStatus(message, error = false) {
     const element = document.getElementById('pageStatus');

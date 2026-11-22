@@ -59,8 +59,9 @@ async function saveAndVerify(field, value, saving, failure) {
 for (const language of languages) {
     const option = document.createElement('option');
     option.value = language.code;
+    // Older accounts still hold English; it shows as a prompt, never as a choice.
     option.textContent =
-        language.label + (language.code === 'en' ? ' (default)' : '');
+        language.code === 'en' ? 'Choose a language' : language.label;
     option.hidden = language.code === 'en';
     selector.append(option);
 }
@@ -79,6 +80,10 @@ document
         event.preventDefault();
         if (!account || save.disabled) return;
         const value = selector.value;
+        if (value === 'en') {
+            setStatus('Choose a destination language first.', true);
+            return;
+        }
         const saved = await saveAndVerify(
             'preferredLanguage', value, 'Saving language…',
             'Couldn’t confirm the language change. Please try again.'

@@ -223,3 +223,17 @@ test('changing the login dropdown passes the requested language to Firestore', a
     await form.submit('loginForm');
     assert.equal(form.calls.options.preferredLanguage, 'es');
 });
+test('opening sign-up with an untouched login dropdown keeps the sign-up language', () => {
+    const form = formHarness();
+    form.element('signupLanguage').value = 'fr';
+    form.element('loginLanguage').value = '';
+    form.element('toSignup').handlers.click({ preventDefault() {} });
+    assert.equal(form.element('signupLanguage').value, 'fr');
+});
+test('opening sign-up after choosing a login language carries that choice over', () => {
+    const form = formHarness();
+    form.element('loginLanguage').value = 'zh';
+    form.element('loginLanguage').handlers.change();
+    form.element('toSignup').handlers.click({ preventDefault() {} });
+    assert.equal(form.element('signupLanguage').value, 'zh');
+});

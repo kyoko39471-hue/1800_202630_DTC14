@@ -46,10 +46,10 @@
                             />
                         </div>
                         <div class="auth-field">
-                            <label for="loginLanguage">Preferred language</label
+                            <label for="loginLanguage">Destination language</label
                             ><select id="loginLanguage">
-                                <option value="en" selected hidden>
-                                    English (default)
+                                <option value="" selected hidden>
+                                    Keep my saved language
                                 </option>
                                 <option value="fr">French</option>
                                 <option value="pa">Punjabi</option>
@@ -106,17 +106,22 @@
                         </div>
                         <div class="auth-field">
                             <label for="signupLanguage"
-                                >Preferred language</label
-                            ><select id="signupLanguage">
-                                <option value="en" selected hidden>
-                                    English (default)
-                                </option>
-                                <option value="fr">French</option>
+                                >Destination language</label
+                            ><select
+                                id="signupLanguage"
+                                aria-describedby="signupLanguageHint"
+                                required
+                            >
+                                <option value="fr" selected>French</option>
                                 <option value="pa">Punjabi</option>
                                 <option value="zh">Mandarin</option>
                                 <option value="ur">Urdu</option>
                                 <option value="es">Spanish</option>
                             </select>
+                            <p id="signupLanguageHint" class="muted">
+                                Phrases are always shown in English, translated
+                                into this language.
+                            </p>
                         </div>
                         <button class="action action-primary" type="submit">
                             Create account
