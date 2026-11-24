@@ -1,101 +1,58 @@
-# Elmo Hikes
-
+# Communication Help
 
 ## Overview
-Elmo Hikes is a client-side JavaScript web application that helps users discover and explore hiking trails. The app displays a curated list of hike trails, each with details such as name, location, difficulty, and an image. Users can browse the list and mark their favorite trails for easy access later.
 
-Developed for the COMP 1800 course, this project applies User-Centred Design practices and agile project management, and demonstrates integration with Firebase backend services for storing user favorites.
+Communication Help is a web app for English-speaking travellers. It helps them read, hear and save useful phrases in the language of the place they are visiting.
 
----
-
+Developed by team DTC14 for COMP 1800 at BCIT.
 
 ## Features
 
-- Browse a list of curated hiking trails with images and details
-- Mark and unmark trails as favorites
-- View a personalized list of favorite hikes
-- Responsive design for desktop and mobile
-
----
-
+- Browse phrases by category: accommodation, restaurants, greetings and emergency
+- Read each phrase in French, Punjabi, Mandarin, Urdu or Spanish
+- Listen to recorded audio, with the browser's own voice as a backup
+- Search within a category and save phrases to your account
+- Choose a destination language at sign-up and change it in your profile
+- Light and dark mode, on desktop and mobile
 
 ## Technologies Used
 
 - **Frontend**: HTML, CSS, JavaScript
 - **Build Tool**: [Vite](https://vitejs.dev/)
-- **Backend**: Firebase for hosting
-- **Database**: Firestore
-
----
-
+- **Backend**: Firebase Authentication and Cloud Firestore
+- **Audio**: Microsoft Azure AI Speech, recorded ahead of time
 
 ## Usage
 
-To run the application locally:
+You need Node.js 20.19+ or 22.12+.
 
-1.  **Clone** the repository.
-2.  **Install dependencies** by running `npm install` in the project root directory.
-3.  **Start the development server** by running the command: `npm run dev`.
-4.  Open your browser and visit the local address shown in your terminal (usually `http://localhost:5173` or similar).
+1. Clone the repository and run `npm install`.
+2. Copy `.env_template` to `.env` and add the Firebase settings.
+3. Run `npm run dev` and open the address shown (usually `http://localhost:5173`).
 
-Once the application is running:
-
-1.  Browse the list of hiking trails displayed on the main page.
-2.  Click the heart icon (or similar) to mark a trail as a favorite.
-3.  View your favorite hikes in the favorites section.
-
----
-
+Run the tests with `node --test tests/*.test.cjs`. The Azure settings are only needed to record new audio; see [docs/phrase-audio.md](docs/phrase-audio.md).
 
 ## Project Structure
 
 ```
-elmo-hikes/
-├── src/
-│   ├── main.js
-├── styles/
-│   └── style.css
-├── public/
-├── images/
-├── index.html
-├── package.json
-├── README.md
-```git commit -m "feat: Add intro to README for #YourName"
-
----
-
+├── *.html           # the six pages
+├── src/             # page scripts, phrase cards, audio, Firebase
+├── styles/          # style.css
+├── images/          # category photos
+├── public/audio/    # recorded phrase clips
+├── scripts/         # generateAudio.js records the clips
+├── tests/
+└── docs/
+```
 
 ## Contributors
-- **Sijin** - BCIT CST Student with a passion for cafes and food and user-friendly applications. Fun fact: Loves traveling in Seoul.
+
+- **Sijin** - BCIT CST Student with a background in philosophy and is passionate about building user-friendly applications. Fun fact: Favorite city to live in: Vancouver; favorite city to travel to: Seoul.
 - **Zamin** - BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: Loves solving Rubik's Cubes in under a minute.
 - **Surkhab** - BCIT CST Student, Frontend enthusiast with a knack for creative design. Fun fact: Has a collection of over 50 houseplants.
 
+## Limitations
 
-
-## Acknowledgments
-
-- Trail data and images are for demonstration purposes only.
-- Code snippets were adapted from resources such as [Stack Overflow](https://stackoverflow.com/) and [MDN Web Docs](https://developer.mozilla.org/).
-- Icons sourced from [FontAwesome](https://fontawesome.com/) and images from [Unsplash](https://unsplash.com/).
-
----
-
-
-## Limitations and Future Work
-### Limitations
-
-- Limited trail details (e.g., no live trail conditions).
-- Accessibility features can be further improved.
-
-### Future Work
-
-- Implement map view and trailhead directions.
-- Add filtering and sorting options (e.g., by difficulty, distance).
-- Create a dark mode for better usability in low-light conditions.
-
----
-
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
+- The app offers a fixed set of phrases and does not translate free text.
+- Transportation phrases are translated and recorded but not shown in the app yet.
+- Audio uses the masculine form of gendered phrases.
