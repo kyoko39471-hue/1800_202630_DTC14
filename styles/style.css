@@ -13,6 +13,8 @@
     --app-button-ink: light-dark(#173d78, #aecbff);
     --app-button-line: light-dark(#c5d5ed, #3d5f91);
     --app-error: light-dark(#a02020, #ffb4ab);
+    --app-hint: light-dark(#0b6b7a, #7fe3ef);
+    --app-hint-soft: light-dark(#e3f6f8, #12343a);
 }
 * {
     box-sizing: border-box;
@@ -164,6 +166,14 @@ p {
 .heading p,
 .muted {
     color: var(--app-muted);
+}
+.field-hint {
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: var(--app-hint-soft);
+    color: var(--app-hint);
+    font-size: 14px;
+    font-weight: 600;
 }
 .language-link {
     width: 100%;

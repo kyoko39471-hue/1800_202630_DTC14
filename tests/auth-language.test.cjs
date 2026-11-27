@@ -253,3 +253,13 @@ test('login and sign-up list each destination language with its native name', ()
         assert.deepEqual(options, expected, id);
     }
 });
+test('sign-up explains the destination language in a highlighted hint tied to the dropdown', () => {
+    const html = fs.readFileSync(path.join(__dirname, '..', 'login.html'), 'utf8');
+    const select = html.match(/<select\s+id="signupLanguage"[^>]*>/)[0];
+    assert.match(select, /aria-describedby="signupLanguageHint"/);
+    const [, className, text] = html.match(
+        /<p id="signupLanguageHint" class="([^"]*)">([^<]*)<\/p>/
+    );
+    assert.equal(className, 'field-hint');
+    assert.equal(text.trim(), 'The language locals speak where you travel.');
+});
