@@ -22,7 +22,6 @@ function layout() {
         },
         history: { length: 1 },
         initTheme() {},
-        setTheme() {},
         toggleTheme() {},
     });
     const source = fs

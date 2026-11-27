@@ -8,14 +8,13 @@ function themeHarness(saved, storageBlocked = false) {
     const writes = [];
     const attributes = {};
     const button = { setAttribute: (key, value) => (attributes[key] = value) };
-    const checkbox = { checked: false };
     const html = { dataset: {}, style: {} };
     const handlers = {};
     const context = vm.createContext({
         document: {
             documentElement: html,
             querySelectorAll: (selector) =>
-                selector === '[data-theme-toggle]' ? [button] : [checkbox],
+                selector === '[data-theme-toggle]' ? [button] : [],
         },
         window: {
             localStorage: {
@@ -38,7 +37,7 @@ function themeHarness(saved, storageBlocked = false) {
         source + '\nglobalThis.api = {setTheme, toggleTheme, getTheme};',
         context
     );
-    return { ...context.api, html, attributes, checkbox, writes, handlers };
+    return { ...context.api, html, attributes, writes, handlers };
 }
 
 test('saved dark appearance loads on another page and keeps accessible controls in sync', () => {
@@ -46,11 +45,11 @@ test('saved dark appearance loads on another page and keeps accessible controls 
     assert.equal(page.getTheme(), 'dark');
     assert.equal(page.html.style.colorScheme, 'dark');
     assert.equal(page.attributes['aria-label'], 'Switch to light mode');
-    assert.equal(page.checkbox.checked, true);
+    assert.equal(page.attributes['aria-pressed'], 'true');
     assert.equal(page.writes.length, 0);
     page.toggleTheme();
     assert.equal(page.getTheme(), 'light');
-    assert.equal(page.checkbox.checked, false);
+    assert.equal(page.attributes['aria-pressed'], 'false');
     assert.deepEqual(page.writes, [['communication-help-theme', 'light']]);
 });
 

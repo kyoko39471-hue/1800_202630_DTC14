@@ -1,5 +1,5 @@
 import '../styles/style.css';
-import { initTheme, setTheme, toggleTheme } from './theme.js';
+import { initTheme, toggleTheme } from './theme.js';
 
 const paths = {
     bookmark: '<path d="M6 3h12v18l-6-4-6 4z"/>',
@@ -75,11 +75,6 @@ export function mountLayout(active) {
     initTheme();
     document.querySelectorAll('[data-theme-toggle]').forEach((button) => {
         button.addEventListener('click', toggleTheme);
-    });
-    document.querySelectorAll('[data-theme-switch]').forEach((input) => {
-        input.addEventListener('change', () => {
-            setTheme(input.checked ? 'dark' : 'light');
-        });
     });
 }
 export function setHeaderLanguage(label) {

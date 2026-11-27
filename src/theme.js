@@ -14,9 +14,6 @@ export function setTheme(theme, remember = true) {
         button.setAttribute('aria-pressed', String(selected === 'dark'));
         button.title = label;
     });
-    document.querySelectorAll('[data-theme-switch]').forEach((input) => {
-        input.checked = selected === 'dark';
-    });
     if (remember) {
         try {
             window.localStorage.setItem(storageKey, selected);

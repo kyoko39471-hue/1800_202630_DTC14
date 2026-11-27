@@ -1,7 +1,7 @@
 import { mountLayout, setHeaderLanguage, setStatus } from './layout.js';
 import { startSignedIn } from './session.js';
 import {
-    languages,
+    addDestinationLanguages,
     languageLabel,
     getUserProfile,
     saveUserProfile,
@@ -56,18 +56,7 @@ async function saveAndVerify(field, value, saving, failure) {
     }
 }
 
-for (const language of languages) {
-    const option = document.createElement('option');
-    option.value = language.code;
-    // Older accounts still hold English; it shows as a prompt, never as a choice.
-    // Each language also appears in its own script so speakers recognise it at a glance.
-    option.textContent =
-        language.code === 'en'
-            ? 'Choose a language'
-            : `${language.label} (${language.native})`;
-    option.hidden = language.code === 'en';
-    selector.append(option);
-}
+addDestinationLanguages(selector);
 startSignedIn(async (user, profile) => {
     account = user;
     displayName = profile.name || user.displayName || '';

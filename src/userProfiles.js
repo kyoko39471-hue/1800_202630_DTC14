@@ -10,6 +10,16 @@ export const languages = [
     { code: 'es', label: 'Spanish', native: 'Español' },
 ];
 
+export function addDestinationLanguages(select) {
+    for (const { code, label, native } of languages) {
+        if (code === 'en') continue;
+        const option = document.createElement('option');
+        option.value = code;
+        option.textContent = `${label} (${native})`;
+        select.append(option);
+    }
+}
+
 export function languageLabel(code) {
     return (
         languages.find((language) => language.code === code)?.label || 'English'

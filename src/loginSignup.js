@@ -1,6 +1,6 @@
 import { loginUser, signupUser, authErrorMessage } from './authentication.js';
 import { auth } from './firebaseConfig.js';
-import { saveUserProfile } from './userProfiles.js';
+import { addDestinationLanguages, saveUserProfile } from './userProfiles.js';
 
 function initAuthUI() {
     const alert = document.getElementById('authAlert');
@@ -11,6 +11,9 @@ function initAuthUI() {
     const signupForm = document.getElementById('signupForm');
     const loginLanguage = document.getElementById('loginLanguage');
     const signupLanguage = document.getElementById('signupLanguage');
+    addDestinationLanguages(loginLanguage);
+    addDestinationLanguages(signupLanguage);
+    signupLanguage.value = 'fr';
     let loginLanguageChanged = false;
     let pendingSignupUser = null;
     let busy = false;

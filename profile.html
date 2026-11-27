@@ -37,7 +37,9 @@
                 <form id="profileForm" class="profile-language">
                     <label for="preferredLanguage">Destination language</label>
                     <div class="profile-language-select">
-                        <select id="preferredLanguage" disabled></select>
+                        <select id="preferredLanguage" disabled>
+                            <option value="en" hidden>Choose a language</option>
+                        </select>
                         <span data-icon="chevron-down" aria-hidden="true"></span>
                     </div>
                     <button class="action action-primary" id="saveLanguage" type="submit" disabled>

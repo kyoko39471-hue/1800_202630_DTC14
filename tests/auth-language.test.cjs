@@ -15,6 +15,7 @@ function profiles(existing, failure) {
     const writes = [];
     const context = vm.createContext({
         db: {},
+        document: { createElement: () => ({}) },
         doc: (_db, collection, uid) => `${collection}/${uid}`,
         getDoc: async () => ({
             exists: () => existing !== null,
@@ -28,7 +29,7 @@ function profiles(existing, failure) {
     });
     vm.runInContext(
         source('userProfiles.js') +
-            '\nglobalThis.api = {saveUserProfile, getUserProfile, languages};',
+            '\nglobalThis.api = {saveUserProfile, getUserProfile, languages, addDestinationLanguages};',
         context
     );
     return { ...context.api, writes };
@@ -126,6 +127,8 @@ function formHarness({ failFirstSave = false, denyLogin = false } = {}) {
             textContent: '',
             disabled: false,
             handlers: {},
+            options: [],
+            append(option) { this.options.push(option); },
             classList: {
                 add: (key) => classes.add(key),
                 remove: (key) => classes.delete(key),
@@ -153,6 +156,7 @@ function formHarness({ failFirstSave = false, denyLogin = false } = {}) {
         },
         window: { location: { assign: (url) => calls.redirects.push(url) } },
         auth,
+        addDestinationLanguages: profiles(null).addDestinationLanguages,
         signupUser: async () => {
             calls.signup++;
             auth.currentUser = user;
@@ -241,12 +245,10 @@ test('login and sign-up list each destination language with its native name', ()
     const expected = Array.from(profiles(null).languages)
         .filter((language) => language.code !== 'en')
         .map((language) => `${language.code}: ${language.label} (${language.native})`);
-    const html = fs.readFileSync(path.join(__dirname, '..', 'login.html'), 'utf8');
+    const form = formHarness();
     for (const id of ['loginLanguage', 'signupLanguage']) {
-        const select = html.match(new RegExp(`id="${id}"[\\s\\S]*?</select>`))[0];
-        const options = Array.from(
-            select.matchAll(/<option value="(\w+)"[^>]*>([^<]+)<\/option>/g),
-            ([, code, text]) => `${code}: ${text.trim()}`
+        const options = form.element(id).options.map(
+            (option) => `${option.value}: ${option.textContent}`
         );
         assert.deepEqual(options, expected, id);
     }
